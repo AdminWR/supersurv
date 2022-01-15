@@ -46,6 +46,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.16",
         "itsgoingd/clockwork": "^5.1",
+        "laravel/sail": "^1.12",
         "mockery/mockery": "^1.4",
         "nunomaduro/collision": "^5.10",
         "nunomaduro/larastan": "^1.0",
@@ -96,6 +97,9 @@
         "sort-packages": true,
         "platform": {
             "php": "7.3.0"
+        },
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
         }
     },
     "extra": {
