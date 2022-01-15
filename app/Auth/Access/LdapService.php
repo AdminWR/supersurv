@@ -1,4 +1,6 @@
-<?php namespace BookStack\Auth\Access;
+<?php
+
+namespace BookStack\Auth\Access;
 
 use BookStack\Auth\User;
 use BookStack\Exceptions\JsonDebugException;
@@ -11,10 +13,10 @@ use Illuminate\Support\Facades\Log;
  * Class LdapService
  * Handles any app-specific LDAP tasks.
  */
-class LdapService extends ExternalAuthService
+class LdapService
 {
-
     protected $ldap;
+    protected $groupSyncService;
     protected $ldapConnection;
     protected $userAvatars;
     protected $config;
@@ -23,25 +25,26 @@ class LdapService extends ExternalAuthService
     /**
      * LdapService constructor.
      */
-    public function __construct(Ldap $ldap, UserAvatars $userAvatars)
+    public function __construct(Ldap $ldap, UserAvatars $userAvatars, GroupSyncService $groupSyncService)
     {
         $this->ldap = $ldap;
         $this->userAvatars = $userAvatars;
+        $this->groupSyncService = $groupSyncService;
         $this->config = config('services.ldap');
         $this->enabled = config('auth.method') === 'ldap';
     }
 
     /**
      * Check if groups should be synced.
-     * @return bool
      */
-    public function shouldSyncGroups()
+    public function shouldSyncGroups(): bool
     {
         return $this->enabled && $this->config['user_to_groups'] !== false;
     }
 
     /**
      * Search for attributes for a specific user on the ldap.
+     *
      * @throws LdapException
      */
     private function getUserWithAttributes(string $userName, array $attributes): ?array
@@ -73,6 +76,7 @@ class LdapService extends ExternalAuthService
     /**
      * Get the details of a user from LDAP using the given username.
      * User found via configurable user filter.
+     *
      * @throws LdapException
      */
     public function getUserDetails(string $userName): ?array
@@ -92,16 +96,16 @@ class LdapService extends ExternalAuthService
 
         $userCn = $this->getUserResponseProperty($user, 'cn', null);
         $formatted = [
-            'uid' => $this->getUserResponseProperty($user, $idAttr, $user['dn']),
-            'name' => $this->getUserResponseProperty($user, $displayNameAttr, $userCn),
-            'dn' => $user['dn'],
+            'uid'   => $this->getUserResponseProperty($user, $idAttr, $user['dn']),
+            'name'  => $this->getUserResponseProperty($user, $displayNameAttr, $userCn),
+            'dn'    => $user['dn'],
             'email' => $this->getUserResponseProperty($user, $emailAttr, null),
             'avatar'=> $thumbnailAttr ? $this->getUserResponseProperty($user, $thumbnailAttr, null) : null,
         ];
 
         if ($this->config['dump_user_details']) {
             throw new JsonDebugException([
-                'details_from_ldap' => $user,
+                'details_from_ldap'        => $user,
                 'details_bookstack_parsed' => $formatted,
             ]);
         }
@@ -137,6 +141,7 @@ class LdapService extends ExternalAuthService
 
     /**
      * Check if the given credentials are valid for the given user.
+     *
      * @throws LdapException
      */
     public function validateUserCredentials(?array $ldapUserDetails, string $password): bool
@@ -146,6 +151,7 @@ class LdapService extends ExternalAuthService
         }
 
         $ldapConnection = $this->getConnection();
+
         try {
             $ldapBind = $this->ldap->bind($ldapConnection, $ldapUserDetails['dn'], $password);
         } catch (ErrorException $e) {
@@ -158,7 +164,9 @@ class LdapService extends ExternalAuthService
     /**
      * Bind the system user to the LDAP connection using the given credentials
      * otherwise anonymous access is attempted.
-     * @param $connection
+     *
+     * @param resource $connection
+     *
      * @throws LdapException
      */
     protected function bindSystemUser($connection)
@@ -181,8 +189,10 @@ class LdapService extends ExternalAuthService
     /**
      * Get the connection to the LDAP server.
      * Creates a new connection if one does not exist.
-     * @return resource
+     *
      * @throws LdapException
+     *
+     * @return resource
      */
     protected function getConnection()
     {
@@ -222,6 +232,7 @@ class LdapService extends ExternalAuthService
         }
 
         $this->ldapConnection = $ldapConnection;
+
         return $this->ldapConnection;
     }
 
@@ -241,6 +252,7 @@ class LdapService extends ExternalAuthService
         // Otherwise, extract the port out
         $hostName = $serverNameParts[0];
         $ldapPort = (count($serverNameParts) > 1) ? intval($serverNameParts[1]) : 389;
+
         return ['host' => $hostName, 'port' => $ldapPort];
     }
 
@@ -254,11 +266,13 @@ class LdapService extends ExternalAuthService
             $newKey = '${' . $key . '}';
             $newAttrs[$newKey] = $this->ldap->escape($attrText);
         }
+
         return strtr($filterString, $newAttrs);
     }
 
     /**
      * Get the groups a user is a part of on ldap.
+     *
      * @throws LdapException
      */
     public function getUserGroups(string $userName): array
@@ -271,12 +285,13 @@ class LdapService extends ExternalAuthService
         }
 
         $userGroups = $this->groupFilter($user);
-        $userGroups = $this->getGroupsRecursive($userGroups, []);
-        return $userGroups;
+
+        return $this->getGroupsRecursive($userGroups, []);
     }
 
     /**
      * Get the parent groups of an array of groups.
+     *
      * @throws LdapException
      */
     private function getGroupsRecursive(array $groupsArray, array $checked): array
@@ -303,6 +318,7 @@ class LdapService extends ExternalAuthService
 
     /**
      * Get the parent groups of a single group.
+     *
      * @throws LdapException
      */
     private function getGroupGroups(string $groupName): array
@@ -336,7 +352,7 @@ class LdapService extends ExternalAuthService
         $count = 0;
 
         if (isset($userGroupSearchResponse[$groupsAttr]['count'])) {
-            $count = (int)$userGroupSearchResponse[$groupsAttr]['count'];
+            $count = (int) $userGroupSearchResponse[$groupsAttr]['count'];
         }
 
         for ($i = 0; $i < $count; $i++) {
@@ -351,12 +367,13 @@ class LdapService extends ExternalAuthService
 
     /**
      * Sync the LDAP groups to the user roles for the current user.
+     *
      * @throws LdapException
      */
     public function syncGroups(User $user, string $username)
     {
         $userLdapGroups = $this->getUserGroups($username);
-        $this->syncWithGroups($user, $userLdapGroups);
+        $this->groupSyncService->syncUserWithFoundGroups($user, $userLdapGroups, $this->config['remove_from_groups']);
     }
 
     /**

@@ -38,7 +38,7 @@ return [
     'app_homepage_desc' => 'Selecione uma opção para ser exibida como página inicial em vez da padrão. Permissões de página serão ignoradas para as páginas selecionadas.',
     'app_homepage_select' => 'Selecione uma página',
     'app_footer_links' => 'Links do Rodapé',
-    'app_footer_links_desc' => 'Add links to show within the site footer. These will be displayed at the bottom of most pages, including those that do not require login. You can use a label of "trans::<key>" to use system-defined translations. For example: Using "trans::common.privacy_policy" will provide the translated text "Privacy Policy" and "trans::common.terms_of_service" will provide the translated text "Terms of Service".',
+    'app_footer_links_desc' => 'Adicionar links para mostrar dentro do rodapé do site. Estes serão exibidos na parte inferior da maioria das páginas, incluindo aqueles que não necessitam de login. Você pode usar uma etiqueta de "trans::<key>" para usar traduções definidas pelo sistema. Por exemplo: Usando "trans::common.privacy_policy" fornecerá o texto traduzido "Política de Privacidade" e "trans::common.terms_of_service" fornecerá o texto traduzido "Termos de Serviço".',
     'app_footer_links_label' => 'Etiqueta do Link',
     'app_footer_links_url' => 'URL do Link',
     'app_footer_links_add' => 'Adicionar Link de Rodapé',
@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Manutenção',
     'maint_image_cleanup' => 'Limpeza de Imagens',
-    'maint_image_cleanup_desc' => "Examina páginas e revisa seus conteúdos para verificar quais imagens e desenhos estão atualmente em uso e quais são redundantes. Certifique-se de criar um backup completo do banco de dados e imagens antes de executar esta ação.",
+    'maint_image_cleanup_desc' => 'Examina páginas e revisa seus conteúdos para verificar quais imagens e desenhos estão atualmente em uso e quais são redundantes. Certifique-se de criar um backup completo do banco de dados e imagens antes de executar esta ação.',
     'maint_delete_images_only_in_revisions' => 'Também excluir imagens que existem apenas em revisões de página antigas',
     'maint_image_cleanup_run' => 'Executar Limpeza',
     'maint_image_cleanup_warning' => ':count imagens potencialmente não utilizadas foram encontradas. Tem certeza de que deseja excluir estas imagens?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Lixeira',
     'recycle_bin_desc' => 'Aqui você pode restaurar itens que foram excluídos ou escolher removê-los permanentemente do sistema. Esta lista não é filtrada diferentemente de listas de atividades similares no sistema onde filtros de permissão são aplicados.',
     'recycle_bin_deleted_item' => 'Item excluído',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'Excluído por',
     'recycle_bin_deleted_at' => 'Momento de Exclusão',
     'recycle_bin_permanently_delete' => 'Excluir permanentemente',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Itens a serem restaurados',
     'recycle_bin_restore_confirm' => 'Esta ação irá restaurar o item excluído, inclusive quaisquer elementos filhos, para seu local original. Se a localização original tiver, entretanto, sido eliminada e estiver agora na lixeira, o item pai também precisará ser restaurado.',
     'recycle_bin_restore_deleted_parent' => 'The parent of this item has also been deleted. These will remain deleted until that parent is also restored.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'Deleted :count total items from the recycle bin.',
     'recycle_bin_restore_notification' => 'Restored :count total items from the recycle bin.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Usuário',
     'audit_table_event' => 'Evento',
     'audit_table_related' => 'Related Item or Detail',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Data da Atividade',
     'audit_date_from' => 'Date Range From',
     'audit_date_to' => 'Date Range To',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Detalhes do Cargo',
     'role_name' => 'Nome do Cargo',
     'role_desc' => 'Breve Descrição do Cargo',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'IDs de Autenticação Externa',
     'role_system' => 'Permissões do Sistema',
     'role_manage_users' => 'Gerenciar usuários',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Gerenciar modelos de página',
     'role_access_api' => 'Acessar API do sistema',
     'role_manage_settings' => 'Gerenciar configurações da aplicação',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Permissões de Ativos',
     'roles_system_warning' => 'Esteja ciente de que o acesso a qualquer uma das três permissões acima pode permitir que um usuário altere seus próprios privilégios ou privilégios de outros usuários no sistema. Apenas atribua cargos com essas permissões para usuários confiáveis.',
     'role_asset_desc' => 'Essas permissões controlam o acesso padrão para os ativos dentro do sistema. Permissões em Livros, Capítulos e Páginas serão sobrescritas por essas permissões.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Cargos do Usuário',
     'users_role_desc' => 'Selecione os cargos aos quais este usuário será vinculado. Se um usuário for vinculado a múltiplos cargos, suas permissões serão empilhadas e ele receberá todas as habilidades dos cargos atribuídos.',
     'users_password' => 'Senha do Usuário',
-    'users_password_desc' => 'Defina uma senha usada para fazer login na aplicação. Esta deve ter pelo menos 6 caracteres.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Você pode escolher enviar a este usuário um convite por e-mail que o possibilitará definir sua própria senha, ou defina você uma senha.',
     'users_send_invite_option' => 'Enviar convite por e-mail',
     'users_external_auth_id' => 'ID de Autenticação Externa',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Criar Token',
     'users_api_tokens_expires' => 'Expira',
     'users_api_tokens_docs' => 'Documentação da API',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'Criar Token de API',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Você tem certeza que deseja excluir este token de API?',
     'user_api_token_delete_success' => 'Token de API excluído com sucesso',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

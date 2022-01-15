@@ -4,11 +4,13 @@ namespace BookStack\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -27,6 +29,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
+        'current_password',
         'password',
         'password_confirmation',
     ];
@@ -34,12 +37,13 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param Exception $exception
-     * @return void
+     * @param \Throwable $exception
      *
-     * @throws Exception
+     * @throws \Throwable
+     *
+     * @return void
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         parent::report($exception);
     }
@@ -47,11 +51,12 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param Exception $e
+     * @param \Illuminate\Http\Request $request
+     * @param Exception                $e
+     *
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         if ($this->isApiRequest($request)) {
             return $this->renderApiException($e);
@@ -71,19 +76,24 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception when the API is in use.
      */
-    protected function renderApiException(Exception $e): JsonResponse
+    protected function renderApiException(Throwable $e): JsonResponse
     {
-        $code = $e->getCode() === 0 ? 500 : $e->getCode();
+        $code = 500;
         $headers = [];
+
         if ($e instanceof HttpException) {
             $code = $e->getStatusCode();
             $headers = $e->getHeaders();
         }
 
+        if ($e instanceof ModelNotFoundException) {
+            $code = 404;
+        }
+
         $responseData = [
             'error' => [
                 'message' => $e->getMessage(),
-            ]
+            ],
         ];
 
         if ($e instanceof ValidationException) {
@@ -92,14 +102,16 @@ class Handler extends ExceptionHandler
         }
 
         $responseData['error']['code'] = $code;
+
         return new JsonResponse($responseData, $code, $headers);
     }
 
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -114,8 +126,9 @@ class Handler extends ExceptionHandler
     /**
      * Convert a validation exception into a JSON response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Validation\ValidationException  $exception
+     * @param \Illuminate\Http\Request                   $request
+     * @param \Illuminate\Validation\ValidationException $exception
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function invalidJson($request, ValidationException $exception)

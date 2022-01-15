@@ -1,11 +1,13 @@
-<?php namespace BookStack\Entities\Tools;
+<?php
 
+namespace BookStack\Entities\Tools;
+
+use BookStack\Entities\EntityProvider;
 use BookStack\Entities\Models\Book;
 use BookStack\Entities\Models\Bookshelf;
 use BookStack\Entities\Models\Chapter;
 use BookStack\Entities\Models\Deletion;
 use BookStack\Entities\Models\Entity;
-use BookStack\Entities\EntityProvider;
 use BookStack\Entities\Models\HasCoverImage;
 use BookStack\Entities\Models\Page;
 use BookStack\Exceptions\NotifyException;
@@ -13,26 +15,31 @@ use BookStack\Facades\Activity;
 use BookStack\Uploads\AttachmentService;
 use BookStack\Uploads\ImageService;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
 class TrashCan
 {
-
     /**
      * Send a shelf to the recycle bin.
+     *
+     * @throws NotifyException
      */
     public function softDestroyShelf(Bookshelf $shelf)
     {
+        $this->ensureDeletable($shelf);
         Deletion::createForEntity($shelf);
         $shelf->delete();
     }
 
     /**
      * Send a book to the recycle bin.
+     *
      * @throws Exception
      */
     public function softDestroyBook(Book $book)
     {
+        $this->ensureDeletable($book);
         Deletion::createForEntity($book);
 
         foreach ($book->pages as $page) {
@@ -48,11 +55,13 @@ class TrashCan
 
     /**
      * Send a chapter to the recycle bin.
+     *
      * @throws Exception
      */
     public function softDestroyChapter(Chapter $chapter, bool $recordDelete = true)
     {
         if ($recordDelete) {
+            $this->ensureDeletable($chapter);
             Deletion::createForEntity($chapter);
         }
 
@@ -67,40 +76,72 @@ class TrashCan
 
     /**
      * Send a page to the recycle bin.
+     *
      * @throws Exception
      */
     public function softDestroyPage(Page $page, bool $recordDelete = true)
     {
         if ($recordDelete) {
+            $this->ensureDeletable($page);
             Deletion::createForEntity($page);
-        }
-
-        // Check if set as custom homepage & remove setting if not used or throw error if active
-        $customHome = setting('app-homepage', '0:');
-        if (intval($page->id) === intval(explode(':', $customHome)[0])) {
-            if (setting('app-homepage-type') === 'page') {
-                throw new NotifyException(trans('errors.page_custom_home_deletion'), $page->getUrl());
-            }
-            setting()->remove('app-homepage');
         }
 
         $page->delete();
     }
 
     /**
+     * Ensure the given entity is deletable.
+     * Is not for permissions, but logical conditions within the application.
+     * Will throw if not deletable.
+     *
+     * @throws NotifyException
+     */
+    protected function ensureDeletable(Entity $entity): void
+    {
+        $customHomeId = intval(explode(':', setting('app-homepage', '0:'))[0]);
+        $customHomeActive = setting('app-homepage-type') === 'page';
+        $removeCustomHome = false;
+
+        // Check custom homepage usage for pages
+        if ($entity instanceof Page && $entity->id === $customHomeId) {
+            if ($customHomeActive) {
+                throw new NotifyException(trans('errors.page_custom_home_deletion'), $entity->getUrl());
+            }
+            $removeCustomHome = true;
+        }
+
+        // Check custom homepage usage within chapters or books
+        if ($entity instanceof Chapter || $entity instanceof Book) {
+            if ($entity->pages()->where('id', '=', $customHomeId)->exists()) {
+                if ($customHomeActive) {
+                    throw new NotifyException(trans('errors.page_custom_home_deletion'), $entity->getUrl());
+                }
+                $removeCustomHome = true;
+            }
+        }
+
+        if ($removeCustomHome) {
+            setting()->remove('app-homepage');
+        }
+    }
+
+    /**
      * Remove a bookshelf from the system.
+     *
      * @throws Exception
      */
     protected function destroyShelf(Bookshelf $shelf): int
     {
         $this->destroyCommonRelations($shelf);
         $shelf->forceDelete();
+
         return 1;
     }
 
     /**
      * Remove a book from the system.
      * Destroys any child chapters and pages.
+     *
      * @throws Exception
      */
     protected function destroyBook(Book $book): int
@@ -120,32 +161,34 @@ class TrashCan
 
         $this->destroyCommonRelations($book);
         $book->forceDelete();
+
         return $count + 1;
     }
 
     /**
      * Remove a chapter from the system.
      * Destroys all pages within.
+     *
      * @throws Exception
      */
     protected function destroyChapter(Chapter $chapter): int
     {
         $count = 0;
         $pages = $chapter->pages()->withTrashed()->get();
-        if (count($pages)) {
-            foreach ($pages as $page) {
-                $this->destroyPage($page);
-                $count++;
-            }
+        foreach ($pages as $page) {
+            $this->destroyPage($page);
+            $count++;
         }
 
         $this->destroyCommonRelations($chapter);
         $chapter->forceDelete();
+
         return $count + 1;
     }
 
     /**
      * Remove a page from the system.
+     *
      * @throws Exception
      */
     protected function destroyPage(Page $page): int
@@ -160,6 +203,7 @@ class TrashCan
         }
 
         $page->forceDelete();
+
         return 1;
     }
 
@@ -171,9 +215,10 @@ class TrashCan
     {
         $counts = [];
 
-        /** @var Entity $instance */
-        foreach ((new EntityProvider)->all() as $key => $instance) {
-            $counts[$key] = $instance->newQuery()->onlyTrashed()->count();
+        foreach ((new EntityProvider())->all() as $key => $instance) {
+            /** @var Builder<Entity> $query */
+            $query = $instance->newQuery();
+            $counts[$key] = $query->onlyTrashed()->count();
         }
 
         return $counts;
@@ -181,6 +226,7 @@ class TrashCan
 
     /**
      * Destroy all items that have pending deletions.
+     *
      * @throws Exception
      */
     public function empty(): int
@@ -190,11 +236,13 @@ class TrashCan
         foreach ($deletions as $deletion) {
             $deleteCount += $this->destroyFromDeletion($deletion);
         }
+
         return $deleteCount;
     }
 
     /**
      * Destroy an element from the given deletion model.
+     *
      * @throws Exception
      */
     public function destroyFromDeletion(Deletion $deletion): int
@@ -207,28 +255,33 @@ class TrashCan
             $count = $this->destroyEntity($deletion->deletable);
         }
         $deletion->delete();
+
         return $count;
     }
 
     /**
      * Restore the content within the given deletion.
+     *
      * @throws Exception
      */
     public function restoreFromDeletion(Deletion $deletion): int
     {
         $shouldRestore = true;
         $restoreCount = 0;
-        $parent = $deletion->deletable->getParent();
 
-        if ($parent && $parent->trashed()) {
-            $shouldRestore = false;
+        if ($deletion->deletable instanceof Entity) {
+            $parent = $deletion->deletable->getParent();
+            if ($parent && $parent->trashed()) {
+                $shouldRestore = false;
+            }
         }
 
-        if ($shouldRestore) {
+        if ($deletion->deletable instanceof Entity && $shouldRestore) {
             $restoreCount = $this->restoreEntity($deletion->deletable);
         }
 
         $deletion->delete();
+
         return $restoreCount;
     }
 
@@ -236,6 +289,7 @@ class TrashCan
      * Automatically clear old content from the recycle bin
      * depending on the configured lifetime.
      * Returns the total number of deleted elements.
+     *
      * @throws Exception
      */
     public function autoClearOld(): int
@@ -287,6 +341,7 @@ class TrashCan
 
     /**
      * Destroy the given entity.
+     *
      * @throws Exception
      */
     protected function destroyEntity(Entity $entity): int
@@ -303,6 +358,8 @@ class TrashCan
         if ($entity instanceof Bookshelf) {
             return $this->destroyShelf($entity);
         }
+
+        return 0;
     }
 
     /**
@@ -320,9 +377,9 @@ class TrashCan
         $entity->deletions()->delete();
         $entity->favourites()->delete();
 
-        if ($entity instanceof HasCoverImage && $entity->cover) {
+        if ($entity instanceof HasCoverImage && $entity->cover()->exists()) {
             $imageService = app()->make(ImageService::class);
-            $imageService->destroy($entity->cover);
+            $imageService->destroy($entity->cover()->first());
         }
     }
 }

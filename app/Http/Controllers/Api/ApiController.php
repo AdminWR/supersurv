@@ -1,4 +1,6 @@
-<?php namespace BookStack\Http\Controllers\Api;
+<?php
+
+namespace BookStack\Http\Controllers\Api;
 
 use BookStack\Api\ListingResponseBuilder;
 use BookStack\Http\Controllers\Controller;
@@ -7,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 abstract class ApiController extends Controller
 {
-
     protected $rules = [];
 
     /**
@@ -17,14 +18,20 @@ abstract class ApiController extends Controller
     protected function apiListingResponse(Builder $query, array $fields): JsonResponse
     {
         $listing = new ListingResponseBuilder($query, request(), $fields);
+
         return $listing->toResponse();
     }
 
     /**
      * Get the validation rules for this controller.
+     * Defaults to a $rules property but can be a rules() method.
      */
     public function getValdationRules(): array
     {
+        if (method_exists($this, 'rules')) {
+            return $this->rules();
+        }
+
         return $this->rules;
     }
 }

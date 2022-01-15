@@ -1,7 +1,10 @@
-<?php namespace BookStack\Auth;
+<?php
+
+namespace BookStack\Auth;
 
 use BookStack\Actions\Favourite;
 use BookStack\Api\ApiToken;
+use BookStack\Auth\Access\Mfa\MfaValue;
 use BookStack\Entities\Tools\SlugGenerator;
 use BookStack\Interfaces\Loggable;
 use BookStack\Interfaces\Sluggable;
@@ -15,6 +18,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,32 +26,39 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
 /**
- * Class User
- * @property string $id
- * @property string $name
- * @property string $slug
- * @property string $email
- * @property string $password
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property bool $email_confirmed
- * @property int $image_id
- * @property string $external_auth_id
- * @property string $system_name
+ * Class User.
+ *
+ * @property int        $id
+ * @property string     $name
+ * @property string     $slug
+ * @property string     $email
+ * @property string     $password
+ * @property Carbon     $created_at
+ * @property Carbon     $updated_at
+ * @property bool       $email_confirmed
+ * @property int        $image_id
+ * @property string     $external_auth_id
+ * @property string     $system_name
  * @property Collection $roles
+ * @property Collection $mfaValues
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, Loggable, Sluggable
 {
-    use Authenticatable, CanResetPassword, Notifiable;
+    use HasFactory;
+    use Authenticatable;
+    use CanResetPassword;
+    use Notifiable;
 
     /**
      * The database table used by the model.
+     *
      * @var string
      */
     protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
+     *
      * @var array
      */
     protected $fillable = ['name', 'email'];
@@ -56,6 +67,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /**
      * The attributes excluded from the model's JSON form.
+     *
      * @var array
      */
     protected $hidden = [
@@ -65,12 +77,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /**
      * This holds the user's permissions when loaded.
+     *
      * @var ?Collection
      */
     protected $permissions;
 
     /**
      * This holds the default user when loaded.
+     *
      * @var null|User
      */
     protected static $defaultUser = null;
@@ -78,13 +92,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * Returns the default public user.
      */
-    public static function getDefault(): User
+    public static function getDefault(): self
     {
         if (!is_null(static::$defaultUser)) {
             return static::$defaultUser;
         }
-        
+
         static::$defaultUser = static::query()->where('system_name', '=', 'public')->first();
+
         return static::$defaultUser;
     }
 
@@ -98,13 +113,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /**
      * The roles that belong to the user.
+     *
      * @return BelongsToMany
      */
     public function roles()
     {
         if ($this->id === 0) {
-            return ;
+            return;
         }
+
         return $this->belongsToMany(Role::class);
     }
 
@@ -161,7 +178,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->leftJoin('permission_role', 'ru.role_id', '=', 'permission_role.role_id')
             ->leftJoin('role_permissions', 'permission_role.permission_id', '=', 'role_permissions.id')
             ->where('ru.user_id', '=', $this->id)
-            ->get()
             ->pluck('name');
 
         return $this->permissions;
@@ -194,7 +210,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * Check if the user has a social account,
      * If a driver is passed it checks for that single account type.
+     *
      * @param bool|string $socialDriver
+     *
      * @return bool
      */
     public function hasSocialAccount($socialDriver = false)
@@ -207,7 +225,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     * Returns a URL to the user's avatar
+     * Returns a URL to the user's avatar.
      */
     public function getAvatar(int $size = 50): string
     {
@@ -222,6 +240,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $err) {
             $avatar = $default;
         }
+
         return $avatar;
     }
 
@@ -250,6 +269,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Get the MFA values belonging to this use.
+     */
+    public function mfaValues(): HasMany
+    {
+        return $this->hasMany(MfaValue::class);
+    }
+
+    /**
      * Get the last activity time for this user.
      */
     public function scopeWithLastActivityAt(Builder $query)
@@ -268,6 +295,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getEditUrl(string $path = ''): string
     {
         $uri = '/settings/users/' . $this->id . '/' . trim($path, '/');
+
         return url(rtrim($uri, '/'));
     }
 
@@ -298,7 +326,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /**
      * Send the password reset notification.
-     * @param  string  $token
+     *
+     * @param string $token
+     *
      * @return void
      */
     public function sendPasswordResetNotification($token)
@@ -307,7 +337,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function logDescriptor(): string
     {
@@ -315,11 +345,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function refreshSlug(): string
     {
         $this->slug = app(SlugGenerator::class)->generate($this);
+
         return $this->slug;
     }
 }

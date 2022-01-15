@@ -3,16 +3,14 @@
 namespace BookStack\Http\Controllers;
 
 use BookStack\Actions\ActivityType;
-use BookStack\Entities\Models\Book;
-use BookStack\Entities\Tools\BookContents;
 use BookStack\Entities\Repos\BookRepo;
-use BookStack\Exceptions\SortOperationException;
+use BookStack\Entities\Tools\BookContents;
+use BookStack\Entities\Tools\BookSortMap;
 use BookStack\Facades\Activity;
 use Illuminate\Http\Request;
 
 class BookSortController extends Controller
 {
-
     protected $bookRepo;
 
     public function __construct(BookRepo $bookRepo)
@@ -31,6 +29,7 @@ class BookSortController extends Controller
         $bookChildren = (new BookContents($book))->getTree(false);
 
         $this->setPageTitle(trans('entities.books_sort_named', ['bookName'=>$book->getShortName()]));
+
         return view('books.sort', ['book' => $book, 'current' => $book, 'bookChildren' => $bookChildren]);
     }
 
@@ -42,7 +41,8 @@ class BookSortController extends Controller
     {
         $book = $this->bookRepo->getBySlug($bookSlug);
         $bookChildren = (new BookContents($book))->getTree();
-        return view('books.sort-box', ['book' => $book, 'bookChildren' => $bookChildren]);
+
+        return view('books.parts.sort-box', ['book' => $book, 'bookChildren' => $bookChildren]);
     }
 
     /**
@@ -58,20 +58,14 @@ class BookSortController extends Controller
             return redirect($book->getUrl());
         }
 
-        $sortMap = collect(json_decode($request->get('sort-tree')));
+        $sortMap = BookSortMap::fromJson($request->get('sort-tree'));
         $bookContents = new BookContents($book);
-        $booksInvolved = collect();
-
-        try {
-            $booksInvolved = $bookContents->sortUsingMap($sortMap);
-        } catch (SortOperationException $exception) {
-            $this->showPermissionError();
-        }
+        $booksInvolved = $bookContents->sortUsingMap($sortMap);
 
         // Rebuild permissions and add activity for involved books.
-        $booksInvolved->each(function (Book $book) {
-            Activity::addForEntity($book, ActivityType::BOOK_SORT);
-        });
+        foreach ($booksInvolved as $bookInvolved) {
+            Activity::add(ActivityType::BOOK_SORT, $bookInvolved);
+        }
 
         return redirect($book->getUrl());
     }

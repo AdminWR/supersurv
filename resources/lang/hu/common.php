@@ -20,7 +20,7 @@ return [
     'role' => 'Szerepkör',
     'cover_image' => 'Borítókép',
     'cover_image_description' => 'A kép méretének kb. 440x250px-nek kell lennie.',
-    
+
     // Actions
     'actions' => 'Műveletek',
     'view' => 'Megtekintés',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Visszaállítás',
     'remove' => 'Eltávolítás',
     'add' => 'Hozzáadás',
+    'configure' => 'Configure',
     'fullscreen' => 'Teljes képernyő',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Rendezési beállítások',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Nincs megjeleníthető aktivitás',
     'no_items' => 'Nincsenek elérhető elemek',
     'back_to_top' => 'Oldal eleje',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'Részletek átkapcsolása',
     'toggle_thumbnails' => 'Bélyegképek átkapcsolása',
     'details' => 'Részletek',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Lista nézet',
     'default' => 'Alapértelmezés szerinti',
     'breadcrumb' => 'Morzsa',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expand Header Menu',

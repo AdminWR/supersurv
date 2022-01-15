@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Bảo trì',
     'maint_image_cleanup' => 'Dọn dẹp ảnh',
-    'maint_image_cleanup_desc' => "Quét nội dung trang và phiên bản để kiểm tra xem các ảnh và hình vẽ nào đang được sử dụng và ảnh nào dư thừa. Đảm bảo rằng bạn đã tạo bản sao lưu toàn dữ liệu và ảnh trước khi chạy chức năng này.",
+    'maint_image_cleanup_desc' => 'Quét nội dung trang và phiên bản để kiểm tra xem các ảnh và hình vẽ nào đang được sử dụng và ảnh nào dư thừa. Đảm bảo rằng bạn đã tạo bản sao lưu toàn dữ liệu và ảnh trước khi chạy chức năng này.',
     'maint_delete_images_only_in_revisions' => 'Also delete images that only exist in old page revisions',
     'maint_image_cleanup_run' => 'Chạy Dọn dẹp',
     'maint_image_cleanup_warning' => 'Đã tìm thấy :count ảnh có thể không được sử dụng. Bạn muốn chắc rằng muốn xóa các ảnh này?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Thùng Rác',
     'recycle_bin_desc' => 'Here you can restore items that have been deleted or choose to permanently remove them from the system. This list is unfiltered unlike similar activity lists in the system where permission filters are applied.',
     'recycle_bin_deleted_item' => 'Mục Đã Xóa',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'Xóa Bởi',
     'recycle_bin_deleted_at' => 'Thời điểm Xóa',
     'recycle_bin_permanently_delete' => 'Xóa Vĩnh viễn',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Items to be Restored',
     'recycle_bin_restore_confirm' => 'This action will restore the deleted item, including any child elements, to their original location. If the original location has since been deleted, and is now in the recycle bin, the parent item will also need to be restored.',
     'recycle_bin_restore_deleted_parent' => 'The parent of this item has also been deleted. These will remain deleted until that parent is also restored.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'Deleted :count total items from the recycle bin.',
     'recycle_bin_restore_notification' => 'Restored :count total items from the recycle bin.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Người dùng',
     'audit_table_event' => 'Sự kiện',
     'audit_table_related' => 'Related Item or Detail',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Ngày hoạt động',
     'audit_date_from' => 'Ngày từ khoảng',
     'audit_date_to' => 'Ngày đến khoảng',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Thông tin chi tiết Quyền',
     'role_name' => 'Tên quyền',
     'role_desc' => 'Thông tin vắn tắt của Quyền',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Mã của xác thực ngoài',
     'role_system' => 'Quyền Hệ thống',
     'role_manage_users' => 'Quản lý người dùng',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Quản lý các mẫu trang',
     'role_access_api' => 'Truy cập đến API hệ thống',
     'role_manage_settings' => 'Quản lý cài đặt của ứng dụng',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Quyền tài sản (asset)',
     'roles_system_warning' => 'Be aware that access to any of the above three permissions can allow a user to alter their own privileges or the privileges of others in the system. Only assign roles with these permissions to trusted users.',
     'role_asset_desc' => 'Các quyền này điều khiển truy cập mặc định tới tài sản (asset) nằm trong hệ thống. Quyền tại Sách, Chường và Trang se ghi đè các quyền này.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Quyền người dùng',
     'users_role_desc' => 'Chọn quyền mà người dùng sẽ được gán. Nếu người dùng được gán nhiều quyền, các quyền hạn sẽ ghi đè lên nhau và họ sẽ nhận được tất cả các quyền hạn từ quyền được gán.',
     'users_password' => 'Mật khẩu người dùng',
-    'users_password_desc' => 'Đặt mật khẩu dùng để đăng nhập ứng dụng. Nó phải có độ dài tối thiểu 6 ký tự.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Bạn có thể chọn để gửi cho người dùng này một email mời, giúp họ có thể tự đặt mật khẩu cho chính họ. Nếu không bạn có thể đặt mật khẩu cho họ.',
     'users_send_invite_option' => 'Gửi email mời người dùng',
     'users_external_auth_id' => 'Mã của xác thực ngoài',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Tạo Token',
     'users_api_tokens_expires' => 'Hết hạn',
     'users_api_tokens_docs' => 'Tài liệu API',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'Tạo Token API',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Bạn có chắc rằng muốn xóa token API này?',
     'user_api_token_delete_success' => 'Token API đã được xóa thành công',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

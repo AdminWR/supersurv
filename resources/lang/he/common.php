@@ -20,7 +20,7 @@ return [
     'role' => 'תפקיד',
     'cover_image' => 'תמונת נושא',
     'cover_image_description' => 'התמונה צריכה להיות בסביבות 440x250px',
-    
+
     // Actions
     'actions' => 'פעולות',
     'view' => 'הצג',
@@ -39,11 +39,14 @@ return [
     'reset' => 'איפוס',
     'remove' => 'הסר',
     'add' => 'הוסף',
+    'configure' => 'Configure',
     'fullscreen' => 'Fullscreen',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Sort Options',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'אין פעילות להציג',
     'no_items' => 'אין פריטים זמינים',
     'back_to_top' => 'בחזרה ללמעלה',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'הצג/הסתר פרטים',
     'toggle_thumbnails' => 'הצג/הסתר תמונות',
     'details' => 'פרטים',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'תצוגת רשימה',
     'default' => 'ברירת מחדל',
     'breadcrumb' => 'Breadcrumb',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expand Header Menu',

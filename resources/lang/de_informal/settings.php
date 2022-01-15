@@ -75,7 +75,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     // Maintenance settings
     'maint' => 'Wartung',
     'maint_image_cleanup' => 'Bilder bereinigen',
-    'maint_image_cleanup_desc' => "Überprüft Seiten- und Versionsinhalte auf ungenutzte und mehrfach vorhandene Bilder. Erstelle vor dem Start ein Backup Deiner Datenbank und Bilder.",
+    'maint_image_cleanup_desc' => 'Überprüft Seiten- und Versionsinhalte auf ungenutzte und mehrfach vorhandene Bilder. Erstelle vor dem Start ein Backup Deiner Datenbank und Bilder.',
     'maint_delete_images_only_in_revisions' => 'Lösche auch Bilder, die nur in alten Seitenüberarbeitungen vorhanden sind',
     'maint_image_cleanup_run' => 'Reinigung starten',
     'maint_image_cleanup_warning' => ':count eventuell unbenutze Bilder wurden gefunden. Möchtest Du diese Bilder löschen?',
@@ -95,6 +95,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'recycle_bin' => 'Papierkorb',
     'recycle_bin_desc' => 'Hier können Sie gelöschte Einträge wiederherstellen oder sie dauerhaft aus dem System entfernen. Diese Liste ist nicht gefiltert, im Gegensatz zu ähnlichen Aktivitätslisten im System, wo Berechtigungsfilter angewendet werden.',
     'recycle_bin_deleted_item' => 'Gelöschter Eintrag',
+    'recycle_bin_deleted_parent' => 'Übergeordnet',
     'recycle_bin_deleted_by' => 'Gelöscht von',
     'recycle_bin_deleted_at' => 'Löschzeitpunkt',
     'recycle_bin_permanently_delete' => 'Dauerhaft löschen',
@@ -107,6 +108,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'recycle_bin_restore_list' => 'Wiederherzustellende Einträge',
     'recycle_bin_restore_confirm' => 'Mit dieser Aktion wird der gelöschte Eintrag einschließlich aller untergeordneten Einträge an seinen ursprünglichen Ort wiederherstellen. Wenn der ursprüngliche Ort gelöscht wurde und sich nun im Papierkorb befindet, muss auch der übergeordnete Eintrag wiederhergestellt werden.',
     'recycle_bin_restore_deleted_parent' => 'Der übergeordnete Eintrag wurde ebenfalls gelöscht. Dieser Eintrag wird weiterhin als gelöscht zählen, bis auch der übergeordnete Eintrag wiederhergestellt wurde.',
+    'recycle_bin_restore_parent' => 'Übergeordneter Eintrag wiederherstellen',
     'recycle_bin_destroy_notification' => ':count Einträge wurden aus dem Papierkorb gelöscht.',
     'recycle_bin_restore_notification' => ':count Einträge wurden aus dem Papierkorb wiederhergestellt.',
 
@@ -120,6 +122,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'audit_table_user' => 'Benutzer',
     'audit_table_event' => 'Ereignis',
     'audit_table_related' => 'Verknüpfter Eintrag oder Detail',
+    'audit_table_ip' => 'IP Adresse',
     'audit_table_date' => 'Aktivitätsdatum',
     'audit_date_from' => 'Zeitraum von',
     'audit_date_to' => 'Zeitraum bis',
@@ -139,6 +142,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'role_details' => 'Rollendetails',
     'role_name' => 'Rollenname',
     'role_desc' => 'Kurzbeschreibung der Rolle',
+    'role_mfa_enforced' => 'Benötigt Mehrfach-Faktor-Authentifizierung',
     'role_external_auth_id' => 'Externe Authentifizierungs-IDs',
     'role_system' => 'System-Berechtigungen',
     'role_manage_users' => 'Benutzer verwalten',
@@ -148,6 +152,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'role_manage_page_templates' => 'Seitenvorlagen verwalten',
     'role_access_api' => 'Systemzugriffs-API',
     'role_manage_settings' => 'Globaleinstellungen verwalten',
+    'role_export_content' => 'Inhalt exportieren',
     'role_asset' => 'Berechtigungen',
     'roles_system_warning' => 'Beachten Sie, dass der Zugriff auf eine der oben genannten drei Berechtigungen einem Benutzer erlauben kann, seine eigenen Berechtigungen oder die Rechte anderer im System zu ändern. Weisen Sie nur Rollen, mit diesen Berechtigungen, vertrauenswürdigen Benutzern zu.',
     'role_asset_desc' => 'Diese Berechtigungen gelten für den Standard-Zugriff innerhalb des Systems. Berechtigungen für Bücher, Kapitel und Seiten überschreiben diese Berechtigungenen.',
@@ -172,7 +177,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'users_role' => 'Benutzerrollen',
     'users_role_desc' => 'Wählen Sie aus, welchen Rollen dieser Benutzer zugeordnet werden soll. Wenn ein Benutzer mehreren Rollen zugeordnet ist, werden die Berechtigungen dieser Rollen gestapelt und er erhält alle Fähigkeiten der zugewiesenen Rollen.',
     'users_password' => 'Benutzerpasswort',
-    'users_password_desc' => 'Legen Sie ein Passwort fest, mit dem Sie sich anmelden möchten. Diese muss mindestens 5 Zeichen lang sein.',
+    'users_password_desc' => 'Lege ein Passwort fest, mit dem du dich anmelden möchtest. Diese muss mindestens 8 Zeichen lang sein.',
     'users_send_invite_text' => 'Du kannst diesem Benutzer eine Einladungs-E-Mail senden, die es ihm erlaubt, sein eigenes Passwort zu setzen, andernfalls kannst du sein Passwort selbst setzen.',
     'users_send_invite_option' => 'Benutzer-Einladungs-E-Mail senden',
     'users_external_auth_id' => 'Externe Authentifizierungs-ID',
@@ -205,6 +210,10 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'users_api_tokens_create' => 'Token erstellen',
     'users_api_tokens_expires' => 'Endet',
     'users_api_tokens_docs' => 'API Dokumentation',
+    'users_mfa' => 'Multi-Faktor-Authentifizierung',
+    'users_mfa_desc' => 'Richte die Multi-Faktor-Authentifizierung als zusätzliche Sicherheitsstufe für dein Benutzerkonto ein.',
+    'users_mfa_x_methods' => ':count Methode konfiguriert|:count Methoden konfiguriert',
+    'users_mfa_configure' => 'Methoden konfigurieren',
 
     // API Tokens
     'user_api_token_create' => 'Neuen API-Token erstellen',
@@ -227,6 +236,34 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
     'user_api_token_delete_confirm' => 'Bist du sicher, dass du diesen API-Token löschen möchtest?',
     'user_api_token_delete_success' => 'API-Token erfolgreich gelöscht',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Neuen Webhook erstellen',
+    'webhooks_none_created' => 'Es wurden noch keine Webhooks erstellt.',
+    'webhooks_edit' => 'Webhook bearbeiten',
+    'webhooks_save' => 'Webhook speichern',
+    'webhooks_details' => 'Webhook-Details',
+    'webhooks_details_desc' => 'Geben Sie einen benutzerfreundlichen Namen und einen POST-Endpunkt als Ort an, an den die Webhook-Daten gesendet werden sollen.',
+    'webhooks_events' => 'Webhook Ereignisse',
+    'webhooks_events_desc' => 'Wählen Sie alle Ereignisse, die diesen Webhook auslösen sollen.',
+    'webhooks_events_warning' => 'Beachten Sie, dass diese Ereignisse für alle ausgewählten Ereignisse ausgelöst werden, auch wenn benutzerdefinierte Berechtigungen angewendet werden. Stellen Sie sicher, dass die Verwendung dieses Webhook keine vertraulichen Inhalte enthüllt.',
+    'webhooks_events_all' => 'Alle System-Ereignisse',
+    'webhooks_name' => 'Webhook-Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpunkt',
+    'webhooks_active' => 'Webhook aktiv',
+    'webhook_events_table_header' => 'Ereignisse',
+    'webhooks_delete' => 'Webhook löschen',
+    'webhooks_delete_warning' => 'Dies wird diesen Webhook mit dem Namen \':webhookName\' vollständig aus dem System löschen.',
+    'webhooks_delete_confirm' => 'Sind Sie sicher, dass Sie diesen Webhook löschen möchten?',
+    'webhooks_format_example' => 'Webhook Format Beispiel',
+    'webhooks_format_example_desc' => 'Webhook Daten werden als POST-Anfrage an den konfigurierten Endpunkt als JSON im folgenden Format gesendet. Die Eigenschaften "related_item" und "url" sind optional und hängen vom Typ des ausgelösten Ereignisses ab.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -242,6 +279,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Estnisch',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -250,6 +288,7 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -265,6 +304,6 @@ Hinweis: Benutzer können ihre E-Mail Adresse nach erfolgreicher Registrierung �
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

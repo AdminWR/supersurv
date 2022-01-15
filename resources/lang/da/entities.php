@@ -27,8 +27,8 @@ return [
     'images' => 'Billeder',
     'my_recent_drafts' => 'Mine seneste kladder',
     'my_recently_viewed' => 'Mine senest viste',
-    'my_most_viewed_favourites' => 'My Most Viewed Favourites',
-    'my_favourites' => 'My Favourites',
+    'my_most_viewed_favourites' => 'Mine mest viste favoritter',
+    'my_favourites' => 'Mine favoritter',
     'no_pages_viewed' => 'Du har ikke besøgt nogle sider',
     'no_pages_recently_created' => 'Ingen sider er blevet oprettet for nyligt',
     'no_pages_recently_updated' => 'Ingen sider er blevet opdateret for nyligt',
@@ -36,6 +36,7 @@ return [
     'export_html' => 'Indeholdt webfil',
     'export_pdf' => 'PDF-fil',
     'export_text' => 'Almindelig tekstfil',
+    'export_md' => 'Markdown Fil',
 
     // Permissions and restrictions
     'permissions' => 'Rettigheder',
@@ -98,6 +99,7 @@ return [
     'shelves_permissions' => 'Reoltilladelser',
     'shelves_permissions_updated' => 'Reoltilladelser opdateret',
     'shelves_permissions_active' => 'Aktive reoltilladelser',
+    'shelves_permissions_cascade_warning' => 'Tilladelser på reoler nedarves ikke automatisk til indeholdte bøger. Dette skyldes, at en bog kan eksistere på flere hylder. Tilladelser kan dog kopieres ned til underliggende bøger ved hjælp af muligheden, der findes nedenfor.',
     'shelves_copy_permissions_to_books' => 'Kopier tilladelser til bøger',
     'shelves_copy_permissions' => 'Kopier tilladelser',
     'shelves_copy_permissions_explain' => 'Dette vil anvende de aktuelle tilladelsesindstillinger på denne boghylde på alle bøger indeholdt i. Før aktivering skal du sikre dig, at ændringer i tilladelserne til denne boghylde er blevet gemt.',
@@ -141,6 +143,8 @@ return [
     'books_sort_chapters_last' => 'Kapitler sidst',
     'books_sort_show_other' => 'Vis andre bøger',
     'books_sort_save' => 'Gem ny ordre',
+    'books_copy' => 'Copy Book',
+    'books_copy_success' => 'Book successfully copied',
 
     // Chapters
     'chapter' => 'Kapitel',
@@ -159,6 +163,8 @@ return [
     'chapters_move' => 'Flyt kapitel',
     'chapters_move_named' => 'Flyt kapitel :chapterName',
     'chapter_move_success' => 'Kapitel flyttet til :bookName',
+    'chapters_copy' => 'Copy Chapter',
+    'chapters_copy_success' => 'Chapter successfully copied',
     'chapters_permissions' => 'Kapiteltilladelser',
     'chapters_empty' => 'Der er lige nu ingen sider i dette kapitel.',
     'chapters_permissions_active' => 'Aktive kapiteltilladelser',
@@ -232,6 +238,7 @@ return [
     'pages_initial_name' => 'Ny side',
     'pages_editing_draft_notification' => 'Du redigerer en kladde der sidst var gemt :timeDiff.',
     'pages_draft_edited_notification' => 'Siden har været opdateret siden da. Det er anbefalet at du kasserer denne kladde.',
+    'pages_draft_page_changed_since_creation' => 'This page has been updated since this draft was created. It is recommended that you discard this draft or take care not to overwrite any page changes.',
     'pages_draft_edit_active' => [
         'start_a' => ':count brugerer har begyndt at redigere denne side',
         'start_b' => ':userName er begyndt at redigere denne side',
@@ -255,6 +262,16 @@ return [
     'tags_explain' => "Tilføj nogle tags for bedre at kategorisere dit indhold. \n Du kan tildele en værdi til et tag for mere dybdegående organisering.",
     'tags_add' => 'Tilføj endnu et tag',
     'tags_remove' => 'Fjern dette tag',
+    'tags_usages' => 'Total tag usages',
+    'tags_assigned_pages' => 'Assigned to Pages',
+    'tags_assigned_chapters' => 'Assigned to Chapters',
+    'tags_assigned_books' => 'Assigned to Books',
+    'tags_assigned_shelves' => 'Assigned to Shelves',
+    'tags_x_unique_values' => ':count unique values',
+    'tags_all_values' => 'All values',
+    'tags_view_tags' => 'View Tags',
+    'tags_view_existing_tags' => 'View existing tags',
+    'tags_list_empty_hint' => 'Tags can be assigned via the page editor sidebar or while editing the details of a book, chapter or shelf.',
     'attachments' => 'Vedhæftninger',
     'attachments_explain' => 'Upload nogle filer, eller vedhæft nogle links, der skal vises på siden. Disse er synlige i sidepanelet.',
     'attachments_explain_instant_save' => 'Ændringer her gemmes med det samme.',
@@ -318,5 +335,13 @@ return [
     'revision_delete_confirm' => 'Er du sikker på at du vil slette denne revision?',
     'revision_restore_confirm' => 'Er du sikker på at du ønsker at gendanne denne revision? Nuværende sideindhold vil blive erstattet.',
     'revision_delete_success' => 'Revision slettet',
-    'revision_cannot_delete_latest' => 'Kan ikke slette seneste revision.'
+    'revision_cannot_delete_latest' => 'Kan ikke slette seneste revision.',
+
+    // Copy view
+    'copy_consider' => 'Please consider the below when copying content.',
+    'copy_consider_permissions' => 'Custom permission settings will not be copied.',
+    'copy_consider_owner' => 'You will become the owner of all copied content.',
+    'copy_consider_images' => 'Page image files will not be duplicated & the original images will retain their relation to the page they were originally uploaded to.',
+    'copy_consider_attachments' => 'Page attachments will not be copied.',
+    'copy_consider_access' => 'A change of location, owner or permissions may result in this content being accessible to those previously without access.',
 ];

@@ -20,7 +20,7 @@ return [
     'role' => 'Uloga',
     'cover_image' => 'Naslovna slika',
     'cover_image_description' => 'Ova slika treba biti približno 440x250px.',
-    
+
     // Actions
     'actions' => 'Akcije',
     'view' => 'Prikaz',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Resetuj',
     'remove' => 'Ukloni',
     'add' => 'Dodaj',
+    'configure' => 'Configure',
     'fullscreen' => 'Prikaz preko čitavog ekrana',
-    'favourite' => 'Favourite',
-    'unfavourite' => 'Unfavourite',
-    'next' => 'Next',
-    'previous' => 'Previous',
+    'favourite' => 'Favorit',
+    'unfavourite' => 'Ukloni favorit',
+    'next' => 'Sljedeće',
+    'previous' => 'Prethodno',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Opcije sortiranja',
@@ -51,7 +54,7 @@ return [
     'sort_ascending' => 'Sortiraj uzlazno',
     'sort_descending' => 'Sortiraj silazno',
     'sort_name' => 'Ime',
-    'sort_default' => 'Default',
+    'sort_default' => 'Početne postavke',
     'sort_created_at' => 'Datum kreiranja',
     'sort_updated_at' => 'Datum ažuriranja',
 
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Nema aktivnosti za prikazivanje',
     'no_items' => 'Nema dostupnih stavki',
     'back_to_top' => 'Povratak na vrh',
+    'skip_to_main_content' => 'Idi odmah na glavni sadržaj',
     'toggle_details' => 'Vidi detalje',
     'toggle_thumbnails' => 'Vidi prikaze slika',
     'details' => 'Detalji',
@@ -67,9 +71,13 @@ return [
     'list_view' => 'Prikaz liste',
     'default' => 'Početne postavke',
     'breadcrumb' => 'Navigacijske stavke',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
-    'header_menu_expand' => 'Expand Header Menu',
+    'header_menu_expand' => 'Otvori meni u zaglavlju',
     'profile_menu' => 'Meni profila',
     'view_profile' => 'Pogledaj profil',
     'edit_profile' => 'Izmjeni profil',
@@ -78,9 +86,9 @@ return [
 
     // Layout tabs
     'tab_info' => 'Informacije',
-    'tab_info_label' => 'Tab: Show Secondary Information',
+    'tab_info_label' => 'Kartica: Prikaži dodatnu informaciju',
     'tab_content' => 'Sadržaj',
-    'tab_content_label' => 'Tab: Show Primary Content',
+    'tab_content_label' => 'Kartica: Prikaži glavni sadržaj',
 
     // Email Content
     'email_action_help' => 'Ukoliko imate poteškoća sa pritiskom na ":actionText" dugme, kopirajte i zaljepite URL koji se nalazi ispod u vaš web pretraživač:',

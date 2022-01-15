@@ -1,4 +1,6 @@
-<?php namespace Tests;
+<?php
+
+namespace Tests;
 
 use BookStack\Notifications\TestEmail;
 use Illuminate\Contracts\Notifications\Dispatcher;
@@ -6,7 +8,6 @@ use Illuminate\Support\Facades\Notification;
 
 class TestEmailTest extends TestCase
 {
-
     public function test_a_send_test_button_shows()
     {
         $pageView = $this->asAdmin()->get('/settings/maintenance');
@@ -33,7 +34,7 @@ class TestEmailTest extends TestCase
         $this->app[Dispatcher::class] = $mockDispatcher;
 
         $exception = new \Exception('A random error occurred when testing an email');
-        $mockDispatcher->shouldReceive('send')->andThrow($exception);
+        $mockDispatcher->shouldReceive('sendNow')->andThrow($exception);
 
         $admin = $this->getAdmin();
         $sendReq = $this->actingAs($admin)->post('/settings/maintenance/send-test-email');
@@ -57,6 +58,4 @@ class TestEmailTest extends TestCase
         $sendReq = $this->actingAs($user)->post('/settings/maintenance/send-test-email');
         Notification::assertSentTo($user, TestEmail::class);
     }
-
-
 }

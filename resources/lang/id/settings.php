@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Pemeliharaan',
     'maint_image_cleanup' => 'Gambar Bersihkan',
-    'maint_image_cleanup_desc' => "Pindai halaman & konten revisi untuk memeriksa gambar dan gambar mana yang saat ini digunakan dan gambar mana yang berlebihan. Pastikan Anda membuat database lengkap dan cadangan gambar sebelum menjalankan ini.",
+    'maint_image_cleanup_desc' => 'Pindai halaman & konten revisi untuk memeriksa gambar dan gambar mana yang saat ini digunakan dan gambar mana yang berlebihan. Pastikan Anda membuat database lengkap dan cadangan gambar sebelum menjalankan ini.',
     'maint_delete_images_only_in_revisions' => 'Hapus juga gambar yang hanya ada di revisi halaman lama',
     'maint_image_cleanup_run' => 'Jalankan Pembersihan',
     'maint_image_cleanup_warning' => ':count ditemukan gambar yang berpotensi tidak digunakan. Anda yakin ingin menghapus gambar-gambar ini?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Tempat Sampah',
     'recycle_bin_desc' => 'Di sini Anda dapat memulihkan item yang telah dihapus atau memilih untuk menghapusnya secara permanen dari sistem. Daftar ini tidak difilter, tidak seperti daftar aktivitas serupa di sistem tempat filter izin diterapkan.',
     'recycle_bin_deleted_item' => 'Item yang Dihapus',
+    'recycle_bin_deleted_parent' => 'Induk',
     'recycle_bin_deleted_by' => 'Dihapus Oleh',
     'recycle_bin_deleted_at' => 'Waktu Penghapusan',
     'recycle_bin_permanently_delete' => 'Hapus Permanen',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Item yang akan Dipulihkan',
     'recycle_bin_restore_confirm' => 'Tindakan ini akan memulihkan item yang dihapus, termasuk semua elemen anak, ke lokasi aslinya. Jika lokasi asli telah dihapus, dan sekarang berada di keranjang sampah, item induk juga perlu dipulihkan.',
     'recycle_bin_restore_deleted_parent' => 'Induk item ini juga telah dihapus. Ini akan tetap dihapus sampai induknya juga dipulihkan.',
+    'recycle_bin_restore_parent' => 'Pulihkan Induk',
     'recycle_bin_destroy_notification' => 'Total :count item dari tempat sampah.',
     'recycle_bin_restore_notification' => 'Total :count item yang dipulihkan dari tempat sampah.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Pengguna',
     'audit_table_event' => 'Peristiwa',
     'audit_table_related' => 'Item atau Detail Terkait',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Tanggal Kegiatan',
     'audit_date_from' => 'Rentang Tanggal Dari',
     'audit_date_to' => 'Rentang Tanggal Sampai',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Detail Peran',
     'role_name' => 'Nama peran',
     'role_desc' => 'Deskripsi Singkat Peran',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Otentikasi Eksternal IDs',
     'role_system' => 'Izin Sistem',
     'role_manage_users' => 'Kelola pengguna',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Kelola template halaman',
     'role_access_api' => 'Akses Sistem API',
     'role_manage_settings' => 'Kelola setelan aplikasi',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Izin Aset',
     'roles_system_warning' => 'Ketahuilah bahwa akses ke salah satu dari tiga izin di atas dapat memungkinkan pengguna untuk mengubah hak mereka sendiri atau orang lain dalam sistem. Hanya tetapkan peran dengan izin ini untuk pengguna tepercaya.',
     'role_asset_desc' => 'Izin ini mengontrol akses default ke aset dalam sistem. Izin pada Buku, Bab, dan Halaman akan menggantikan izin ini.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Peran Pengguna',
     'users_role_desc' => 'Pilih peran mana yang akan ditetapkan untuk pengguna ini. Jika pengguna ditetapkan ke beberapa peran, izin dari peran tersebut akan bertumpuk dan mereka akan menerima semua kemampuan dari peran yang ditetapkan.',
     'users_password' => 'Kata Sandi Pengguna',
-    'users_password_desc' => 'Atur kata sandi yang digunakan untuk masuk ke aplikasi. Panjangnya minimal harus 6 karakter.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Anda dapat memilih untuk mengirimi pengguna ini email undangan yang memungkinkan mereka menyetel sandi mereka sendiri, atau Anda dapat menyetel sandi mereka sendiri.',
     'users_send_invite_option' => 'Kirim email undangan pengguna',
     'users_external_auth_id' => 'Otentikasi Eksternal ID',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Buat Token',
     'users_api_tokens_expires' => 'Kedaluwarsa',
     'users_api_tokens_docs' => 'Dokumentasi API',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'Buat Token API',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Anda yakin ingin menghapus token API ini?',
     'user_api_token_delete_success' => 'Token API berhasil dihapus',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

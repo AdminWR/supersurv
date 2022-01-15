@@ -1,7 +1,10 @@
-<?php namespace Tests\Uploads;
+<?php
+
+namespace Tests\Uploads;
 
 use BookStack\Entities\Models\Page;
 use Illuminate\Http\UploadedFile;
+use stdClass;
 
 trait UsesImages
 {
@@ -29,11 +32,12 @@ trait UsesImages
         $data = file_get_contents($base64FilePath);
         $decoded = base64_decode($data);
         file_put_contents($imagePath, $decoded);
+
         return new UploadedFile($imagePath, $imageFileName, 'image/png', null, true);
     }
 
     /**
-     * Get a test image that can be uploaded
+     * Get a test image that can be uploaded.
      */
     protected function getTestImage(string $fileName, ?string $testDataFileName = null): UploadedFile
     {
@@ -42,6 +46,7 @@ trait UsesImages
 
     /**
      * Get the raw file data for the test image.
+     *
      * @return false|string
      */
     protected function getTestImageContent()
@@ -54,19 +59,22 @@ trait UsesImages
      */
     protected function getTestImagePath(string $type, string $fileName): string
     {
-        return '/uploads/images/' . $type . '/' . Date('Y-m') . '/' . $fileName;
+        return '/uploads/images/' . $type . '/' . date('Y-m') . '/' . $fileName;
     }
 
     /**
      * Uploads an image with the given name.
+     *
      * @param $name
-     * @param int $uploadedTo
+     * @param int    $uploadedTo
      * @param string $contentType
+     *
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
     protected function uploadImage($name, $uploadedTo = 0, $contentType = 'image/png', ?string $testDataFileName = null)
     {
         $file = $this->getTestImage($name, $testDataFileName);
+
         return $this->withHeader('Content-Type', $contentType)
             ->call('POST', '/images/gallery', ['uploaded_to' => $uploadedTo], [], ['file' => $file], []);
     }
@@ -75,8 +83,10 @@ trait UsesImages
      * Upload a new gallery image.
      * Returns the image name.
      * Can provide a page to relate the image to.
+     *
      * @param Page|null $page
-     * @return array
+     *
+     * @return array{name: string, path: string, page: Page, response: stdClass}
      */
     protected function uploadGalleryImage(Page $page = null, ?string $testDataFileName = null)
     {
@@ -90,10 +100,11 @@ trait UsesImages
 
         $upload = $this->uploadImage($imageName, $page->id, 'image/png', $testDataFileName);
         $upload->assertStatus(200);
+
         return [
-            'name' => $imageName,
-            'path' => $relPath,
-            'page' => $page,
+            'name'     => $imageName,
+            'path'     => $relPath,
+            'page'     => $page,
             'response' => json_decode($upload->getContent()),
         ];
     }
@@ -108,5 +119,4 @@ trait UsesImages
             unlink($path);
         }
     }
-
 }

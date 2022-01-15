@@ -1,4 +1,6 @@
-<?php namespace BookStack\Actions;
+<?php
+
+namespace BookStack\Actions;
 
 class ActivityType
 {
@@ -48,4 +50,19 @@ class ActivityType
     const AUTH_PASSWORD_RESET_UPDATE = 'auth_password_reset_update';
     const AUTH_LOGIN = 'auth_login';
     const AUTH_REGISTER = 'auth_register';
+
+    const MFA_SETUP_METHOD = 'mfa_setup_method';
+    const MFA_REMOVE_METHOD = 'mfa_remove_method';
+
+    const WEBHOOK_CREATE = 'webhook_create';
+    const WEBHOOK_UPDATE = 'webhook_update';
+    const WEBHOOK_DELETE = 'webhook_delete';
+
+    /**
+     * Get all the possible values.
+     */
+    public static function all(): array
+    {
+        return (new \ReflectionClass(static::class))->getConstants();
+    }
 }

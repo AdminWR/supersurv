@@ -71,15 +71,17 @@
                                 <a href="{{ $currentUser->getEditUrl() }}">@icon('edit'){{ trans('common.edit_profile') }}</a>
                             </li>
                             <li>
-                                @if(config('auth.method') === 'saml2')
-                                    <a href="{{ url('/saml2/logout') }}">@icon('logout'){{ trans('auth.logout') }}</a>
-                                @else
-                                    <a href="{{ url('/logout') }}">@icon('logout'){{ trans('auth.logout') }}</a>
-                                @endif
+                                <form action="{{ url(config('auth.method') === 'saml2' ? '/saml2/logout' : '/logout') }}"
+                                      method="post">
+                                    {{ csrf_field() }}
+                                    <button class="text-muted icon-list-item text-primary">
+                                        @icon('logout'){{ trans('auth.logout') }}
+                                    </button>
+                                </form>
                             </li>
                             <li><hr></li>
                             <li>
-                                @include('partials.dark-mode-toggle')
+                                @include('common.dark-mode-toggle')
                             </li>
                         </ul>
                     </div>

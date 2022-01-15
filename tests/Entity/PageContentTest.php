@@ -1,7 +1,9 @@
-<?php namespace Tests\Entity;
+<?php
 
-use BookStack\Entities\Tools\PageContent;
+namespace Tests\Entity;
+
 use BookStack\Entities\Models\Page;
+use BookStack\Entities\Tools\PageContent;
 use Tests\TestCase;
 use Tests\Uploads\UsesImages;
 
@@ -60,7 +62,9 @@ class PageContentTest extends TestCase
 
     public function test_page_includes_do_not_break_tables()
     {
+        /** @var Page $page */
         $page = Page::query()->first();
+        /** @var Page $secondPage */
         $secondPage = Page::query()->where('id', '!=', $page->id)->first();
 
         $content = '<table id="table"><tbody><tr><td>test</td></tr></tbody></table>';
@@ -70,9 +74,26 @@ class PageContentTest extends TestCase
         $page->html = "{{@{$secondPage->id}#table}}";
         $page->save();
 
-        $this->asEditor();
-        $pageResp = $this->get($page->getUrl());
-        $pageResp->assertSee($content);
+        $pageResp = $this->asEditor()->get($page->getUrl());
+        $pageResp->assertSee($content, false);
+    }
+
+    public function test_page_includes_do_not_break_code()
+    {
+        /** @var Page $page */
+        $page = Page::query()->first();
+        /** @var Page $secondPage */
+        $secondPage = Page::query()->where('id', '!=', $page->id)->first();
+
+        $content = '<pre id="bkmrk-code"><code>var cat = null;</code></pre>';
+        $secondPage->html = $content;
+        $secondPage->save();
+
+        $page->html = "{{@{$secondPage->id}#bkmrk-code}}";
+        $page->save();
+
+        $pageResp = $this->asEditor()->get($page->getUrl());
+        $pageResp->assertSee($content, false);
     }
 
     public function test_page_includes_rendered_on_book_export()
@@ -104,7 +125,7 @@ class PageContentTest extends TestCase
 
         $pageView = $this->get($page->getUrl());
         $pageView->assertStatus(200);
-        $pageView->assertDontSee($script);
+        $pageView->assertDontSee($script, false);
         $pageView->assertSee('abc123abc123');
     }
 
@@ -131,17 +152,28 @@ class PageContentTest extends TestCase
             $pageView->assertElementNotContains('.page-content', '<script>');
             $pageView->assertElementNotContains('.page-content', '</script>');
         }
-
     }
 
-    public function test_iframe_js_and_base64_urls_are_removed()
+    public function test_js_and_base64_src_urls_are_removed()
     {
         $checks = [
             '<iframe src="javascript:alert(document.cookie)"></iframe>',
+            '<iframe src="JavAScRipT:alert(document.cookie)"></iframe>',
+            '<iframe src="JavAScRipT:alert(document.cookie)"></iframe>',
             '<iframe SRC=" javascript: alert(document.cookie)"></iframe>',
             '<iframe src="data:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg==" frameborder="0"></iframe>',
+            '<iframe src="DaTa:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg==" frameborder="0"></iframe>',
             '<iframe src=" data:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg==" frameborder="0"></iframe>',
-            '<iframe srcdoc="<script>window.alert(document.cookie)</script>"></iframe>'
+            '<img src="javascript:alert(document.cookie)"/>',
+            '<img src="JavAScRipT:alert(document.cookie)"/>',
+            '<img src="JavAScRipT:alert(document.cookie)"/>',
+            '<img SRC=" javascript: alert(document.cookie)"/>',
+            '<img src="data:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg=="/>',
+            '<img src="DaTa:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg=="/>',
+            '<img src=" data:text/html;base64,PHNjcmlwdD5hbGVydCgnaGVsbG8nKTwvc2NyaXB0Pg=="/>',
+            '<iframe srcdoc="<script>window.alert(document.cookie)</script>"></iframe>',
+            '<iframe SRCdoc="<script>window.alert(document.cookie)</script>"></iframe>',
+            '<IMG SRC=`javascript:alert("RSnake says, \'XSS\'")`>',
         ];
 
         $this->asEditor();
@@ -154,20 +186,22 @@ class PageContentTest extends TestCase
             $pageView = $this->get($page->getUrl());
             $pageView->assertStatus(200);
             $pageView->assertElementNotContains('.page-content', '<iframe>');
+            $pageView->assertElementNotContains('.page-content', '<img');
             $pageView->assertElementNotContains('.page-content', '</iframe>');
             $pageView->assertElementNotContains('.page-content', 'src=');
             $pageView->assertElementNotContains('.page-content', 'javascript:');
             $pageView->assertElementNotContains('.page-content', 'data:');
             $pageView->assertElementNotContains('.page-content', 'base64');
         }
-
     }
 
     public function test_javascript_uri_links_are_removed()
     {
         $checks = [
             '<a id="xss" href="javascript:alert(document.cookie)>Click me</a>',
-            '<a id="xss" href="javascript: alert(document.cookie)>Click me</a>'
+            '<a id="xss" href="javascript: alert(document.cookie)>Click me</a>',
+            '<a id="xss" href="JaVaScRiPt: alert(document.cookie)>Click me</a>',
+            '<a id="xss" href=" JaVaScRiPt: alert(document.cookie)>Click me</a>',
         ];
 
         $this->asEditor();
@@ -179,16 +213,19 @@ class PageContentTest extends TestCase
 
             $pageView = $this->get($page->getUrl());
             $pageView->assertStatus(200);
-            $pageView->assertElementNotContains('.page-content', '<a id="xss">');
+            $pageView->assertElementNotContains('.page-content', '<a id="xss"');
             $pageView->assertElementNotContains('.page-content', 'href=javascript:');
         }
     }
+
     public function test_form_actions_with_javascript_are_removed()
     {
         $checks = [
             '<form><input id="xss" type=submit formaction=javascript:alert(document.domain) value=Submit><input></form>',
+            '<form ><button id="xss" formaction="JaVaScRiPt:alert(document.domain)">Click me</button></form>',
             '<form ><button id="xss" formaction=javascript:alert(document.domain)>Click me</button></form>',
-            '<form id="xss" action=javascript:alert(document.domain)><input type=submit value=Submit></form>'
+            '<form id="xss" action=javascript:alert(document.domain)><input type=submit value=Submit></form>',
+            '<form id="xss" action="JaVaScRiPt:alert(document.domain)"><input type=submit value=Submit></form>',
         ];
 
         $this->asEditor();
@@ -207,11 +244,13 @@ class PageContentTest extends TestCase
             $pageView->assertElementNotContains('.page-content', 'formaction=javascript:');
         }
     }
-    
+
     public function test_metadata_redirects_are_removed()
     {
         $checks = [
             '<meta http-equiv="refresh" content="0; url=//external_url">',
+            '<meta http-equiv="refresh" ConTeNt="0; url=//external_url">',
+            '<meta http-equiv="refresh" content="0; UrL=//external_url">',
         ];
 
         $this->asEditor();
@@ -229,6 +268,7 @@ class PageContentTest extends TestCase
             $pageView->assertElementNotContains('.page-content', 'external_url');
         }
     }
+
     public function test_page_inline_on_attributes_removed_by_default()
     {
         $this->asEditor();
@@ -239,19 +279,21 @@ class PageContentTest extends TestCase
 
         $pageView = $this->get($page->getUrl());
         $pageView->assertStatus(200);
-        $pageView->assertDontSee($script);
-        $pageView->assertSee('<p>Hello</p>');
+        $pageView->assertDontSee($script, false);
+        $pageView->assertSee('<p>Hello</p>', false);
     }
 
     public function test_more_complex_inline_on_attributes_escaping_scenarios()
     {
         $checks = [
             '<p onclick="console.log(\'test\')">Hello</p>',
+            '<p OnCliCk="console.log(\'test\')">Hello</p>',
             '<div>Lorem ipsum dolor sit amet.</div><p onclick="console.log(\'test\')">Hello</p>',
             '<div>Lorem ipsum dolor sit amet.<p onclick="console.log(\'test\')">Hello</p></div>',
             '<div><div><div><div>Lorem ipsum dolor sit amet.<p onclick="console.log(\'test\')">Hello</p></div></div></div></div>',
             '<div onclick="console.log(\'test\')">Lorem ipsum dolor sit amet.</div><p onclick="console.log(\'test\')">Hello</p><div></div>',
             '<a a="<img src=1 onerror=\'alert(1)\'> ',
+            '\<a onclick="alert(document.cookie)"\>xss link\</a\>',
         ];
 
         $this->asEditor();
@@ -265,7 +307,6 @@ class PageContentTest extends TestCase
             $pageView->assertStatus(200);
             $pageView->assertElementNotContains('.page-content', 'onclick');
         }
-
     }
 
     public function test_page_content_scripts_show_when_configured()
@@ -279,8 +320,30 @@ class PageContentTest extends TestCase
         $page->save();
 
         $pageView = $this->get($page->getUrl());
-        $pageView->assertSee($script);
+        $pageView->assertSee($script, false);
         $pageView->assertDontSee('abc123abc123');
+    }
+
+    public function test_svg_xlink_hrefs_are_removed()
+    {
+        $checks = [
+            '<svg id="test" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><a xlink:href="javascript:alert(document.domain)"><rect x="0" y="0" width="100" height="100" /></a></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="data:application/xml;base64 ,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGRlZnM+CjxjaXJjbGUgaWQ9InRlc3QiIHI9IjAiIGN4PSIwIiBjeT0iMCIgc3R5bGU9ImZpbGw6ICNGMDAiPgo8c2V0IGF0dHJpYnV0ZU5hbWU9ImZpbGwiIGF0dHJpYnV0ZVR5cGU9IkNTUyIgb25iZWdpbj0nYWxlcnQoZG9jdW1lbnQuZG9tYWluKScKb25lbmQ9J2FsZXJ0KCJvbmVuZCIpJyB0bz0iIzAwRiIgYmVnaW49IjBzIiBkdXI9Ijk5OXMiIC8+CjwvY2lyY2xlPgo8L2RlZnM+Cjx1c2UgeGxpbms6aHJlZj0iI3Rlc3QiLz4KPC9zdmc+#test"/></svg>',
+        ];
+
+        $this->asEditor();
+        $page = Page::query()->first();
+
+        foreach ($checks as $check) {
+            $page->html = $check;
+            $page->save();
+
+            $pageView = $this->get($page->getUrl());
+            $pageView->assertStatus(200);
+            $pageView->assertElementNotContains('.page-content', 'alert');
+            $pageView->assertElementNotContains('.page-content', 'xlink:href');
+            $pageView->assertElementNotContains('.page-content', 'application/xml');
+        }
     }
 
     public function test_page_inline_on_attributes_show_if_configured()
@@ -294,8 +357,8 @@ class PageContentTest extends TestCase
         $page->save();
 
         $pageView = $this->get($page->getUrl());
-        $pageView->assertSee($script);
-        $pageView->assertDontSee('<p>Hello</p>');
+        $pageView->assertSee($script, false);
+        $pageView->assertDontSee('<p>Hello</p>', false);
     }
 
     public function test_duplicate_ids_does_not_break_page_render()
@@ -308,7 +371,7 @@ class PageContentTest extends TestCase
         $pageA->html = $content;
         $pageA->save();
 
-        $pageB->html = '<ul id="bkmrk-xxx-%28"></ul> <p>{{@'. $pageA->id .'#test}}</p>';
+        $pageB->html = '<ul id="bkmrk-xxx-%28"></ul> <p>{{@' . $pageA->id . '#test}}</p>';
         $pageB->save();
 
         $pageView = $this->get($pageB->getUrl());
@@ -322,14 +385,14 @@ class PageContentTest extends TestCase
 
         $content = '<ul id="bkmrk-test"><li>test a</li><li><ul id="bkmrk-test"><li>test b</li></ul></li></ul>';
         $pageSave = $this->put($page->getUrl(), [
-            'name' => $page->name,
-            'html' => $content,
-            'summary' => ''
+            'name'    => $page->name,
+            'html'    => $content,
+            'summary' => '',
         ]);
         $pageSave->assertRedirect();
 
         $updatedPage = Page::query()->where('id', '=', $page->id)->first();
-        $this->assertEquals(substr_count($updatedPage->html, "bkmrk-test\""), 1);
+        $this->assertEquals(substr_count($updatedPage->html, 'bkmrk-test"'), 1);
     }
 
     public function test_anchors_referencing_non_bkmrk_ids_rewritten_after_save()
@@ -339,9 +402,9 @@ class PageContentTest extends TestCase
 
         $content = '<h1 id="non-standard-id">test</h1><p><a href="#non-standard-id">link</a></p>';
         $this->put($page->getUrl(), [
-            'name' => $page->name,
-            'html' => $content,
-            'summary' => ''
+            'name'    => $page->name,
+            'html'    => $content,
+            'summary' => '',
         ]);
 
         $updatedPage = Page::query()->where('id', '=', $page->id)->first();
@@ -358,21 +421,21 @@ class PageContentTest extends TestCase
         $this->assertCount(3, $navMap);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h1',
-            'link' => '#testa',
-            'text' => 'Hello',
-            'level' => 1,
+            'link'     => '#testa',
+            'text'     => 'Hello',
+            'level'    => 1,
         ], $navMap[0]);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h2',
-            'link' => '#testb',
-            'text' => 'There',
-            'level' => 2,
+            'link'     => '#testb',
+            'text'     => 'There',
+            'level'    => 2,
         ], $navMap[1]);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h3',
-            'link' => '#testc',
-            'text' => 'Donkey',
-            'level' => 3,
+            'link'     => '#testc',
+            'text'     => 'Donkey',
+            'level'    => 3,
         ], $navMap[2]);
     }
 
@@ -385,8 +448,8 @@ class PageContentTest extends TestCase
         $this->assertCount(1, $navMap);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h1',
-            'link' => '#testa',
-            'text' => 'Hello'
+            'link'     => '#testa',
+            'text'     => 'Hello',
         ], $navMap[0]);
     }
 
@@ -399,15 +462,15 @@ class PageContentTest extends TestCase
         $this->assertCount(3, $navMap);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h4',
-            'level' => 1,
+            'level'    => 1,
         ], $navMap[0]);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h5',
-            'level' => 2,
+            'level'    => 2,
         ], $navMap[1]);
         $this->assertArrayMapIncludes([
             'nodeName' => 'h6',
-            'level' => 3,
+            'level'    => 3,
         ], $navMap[2]);
     }
 
@@ -436,7 +499,7 @@ class PageContentTest extends TestCase
 | Paragraph   | Text        |';
         $this->put($page->getUrl(), [
             'name' => $page->name,  'markdown' => $content,
-            'html' => '', 'summary' => ''
+            'html' => '', 'summary' => '',
         ]);
 
         $page->refresh();
@@ -455,7 +518,7 @@ class PageContentTest extends TestCase
 - [x] Item b';
         $this->put($page->getUrl(), [
             'name' => $page->name,  'markdown' => $content,
-            'html' => '', 'summary' => ''
+            'html' => '', 'summary' => '',
         ]);
 
         $page->refresh();
@@ -463,7 +526,8 @@ class PageContentTest extends TestCase
         $this->assertStringContainsString('type="checkbox"', $page->html);
 
         $pageView = $this->get($page->getUrl());
-        $pageView->assertElementExists('.page-content input[type=checkbox]');
+        $pageView->assertElementExists('.page-content li.task-list-item input[type=checkbox]');
+        $pageView->assertElementExists('.page-content li.task-list-item input[type=checkbox][checked=checked]');
     }
 
     public function test_page_markdown_strikethrough_rendering()
@@ -474,7 +538,7 @@ class PageContentTest extends TestCase
         $content = '~~some crossed out text~~';
         $this->put($page->getUrl(), [
             'name' => $page->name,  'markdown' => $content,
-            'html' => '', 'summary' => ''
+            'html' => '', 'summary' => '',
         ]);
 
         $page->refresh();
@@ -492,7 +556,7 @@ class PageContentTest extends TestCase
         $content = '<!-- Test Comment -->';
         $this->put($page->getUrl(), [
             'name' => $page->name,  'markdown' => $content,
-            'html' => '', 'summary' => ''
+            'html' => '', 'summary' => '',
         ]);
 
         $page->refresh();
@@ -500,7 +564,7 @@ class PageContentTest extends TestCase
 
         $pageView = $this->get($page->getUrl());
         $pageView->assertStatus(200);
-        $pageView->assertSee($content);
+        $pageView->assertSee($content, false);
     }
 
     public function test_base64_images_get_extracted_from_page_content()
@@ -510,7 +574,7 @@ class PageContentTest extends TestCase
 
         $this->put($page->getUrl(), [
             'name' => $page->name, 'summary' => '',
-            'html' => '<p>test<img src="data:image/jpeg;base64,'.$this->base64Jpeg.'"/></p>',
+            'html' => '<p>test<img src="data:image/jpeg;base64,' . $this->base64Jpeg . '"/></p>',
         ]);
 
         $page->refresh();
@@ -534,7 +598,7 @@ class PageContentTest extends TestCase
         $base64PngWithoutWhitespace = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQAB';
         $this->put($page->getUrl(), [
             'name' => $page->name, 'summary' => '',
-            'html' => '<p>test<img src="data:image/png;base64,'.$base64PngWithWhitespace.'"/></p>',
+            'html' => '<p>test<img src="data:image/png;base64,' . $base64PngWithWhitespace . '"/></p>',
         ]);
 
         $page->refresh();
@@ -549,17 +613,81 @@ class PageContentTest extends TestCase
         $this->deleteImage($imagePath);
     }
 
-    public function test_base64_images_blanked_if_not_supported_extension_for_extract()
+    public function test_base64_images_within_html_blanked_if_not_supported_extension_for_extract()
+    {
+        // Relevant to https://github.com/BookStackApp/BookStack/issues/3010 and other cases
+        $extensions = [
+            'jiff', 'pngr', 'png ', ' png', '.png', 'png.', 'p.ng', ',png',
+            'data:image/png', ',data:image/png',
+        ];
+
+        foreach ($extensions as $extension) {
+            $this->asEditor();
+            $page = Page::query()->first();
+
+            $this->put($page->getUrl(), [
+                'name' => $page->name, 'summary' => '',
+                'html' => '<p>test<img src="data:image/' . $extension . ';base64,' . $this->base64Jpeg . '"/></p>',
+            ]);
+
+            $page->refresh();
+            $this->assertStringContainsString('<img src=""', $page->html);
+        }
+    }
+
+    public function test_base64_images_get_extracted_from_markdown_page_content()
     {
         $this->asEditor();
         $page = Page::query()->first();
 
         $this->put($page->getUrl(), [
-            'name' => $page->name, 'summary' => '',
-            'html' => '<p>test<img src="data:image/jiff;base64,'.$this->base64Jpeg.'"/></p>',
+            'name'     => $page->name, 'summary' => '',
+            'markdown' => 'test ![test](data:image/jpeg;base64,' . $this->base64Jpeg . ')',
+        ]);
+
+        $page->refresh();
+        $this->assertStringMatchesFormat('%A<p%A>test <img src="http://localhost/uploads/images/gallery/%A.jpeg" alt="test">%A</p>%A', $page->html);
+
+        $matches = [];
+        preg_match('/src="http:\/\/localhost(.*?)"/', $page->html, $matches);
+        $imagePath = $matches[1];
+        $imageFile = public_path($imagePath);
+        $this->assertEquals(base64_decode($this->base64Jpeg), file_get_contents($imageFile));
+
+        $this->deleteImage($imagePath);
+    }
+
+    public function test_base64_images_within_markdown_blanked_if_not_supported_extension_for_extract()
+    {
+        $this->asEditor();
+        $page = Page::query()->first();
+
+        $this->put($page->getUrl(), [
+            'name'     => $page->name, 'summary' => '',
+            'markdown' => 'test ![test](data:image/jiff;base64,' . $this->base64Jpeg . ')',
         ]);
 
         $page->refresh();
         $this->assertStringContainsString('<img src=""', $page->html);
+    }
+
+    public function test_nested_headers_gets_assigned_an_id()
+    {
+        $this->asEditor();
+        $page = Page::query()->first();
+
+        $content = '<table><tbody><tr><td><h5>Simple Test</h5></td></tr></tbody></table>';
+        $this->put($page->getUrl(), [
+            'name'    => $page->name,
+            'html'    => $content,
+            'summary' => '',
+        ]);
+
+        $updatedPage = Page::query()->where('id', '=', $page->id)->first();
+
+        // The top level <table> node will get assign the bkmrk-simple-test id because the system will
+        // take the node value of h5
+        // So the h5 should get the bkmrk-simple-test-1 id
+        $this->assertStringContainsString('<h5 id="bkmrk-simple-test-1">Simple Test</h5>', $updatedPage->html);
     }
 }

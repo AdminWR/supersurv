@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Vzdrževanje',
     'maint_image_cleanup' => 'Odstrani /počisti slike',
-    'maint_image_cleanup_desc' => "Pregleda vsebino strani in revizij ter ugotovi, katere slike in risbe so v uporabi in katere so odvečne. Preden to poženeš, naredi popolno varnostno kopijo podatkovne zbirke in slik.",
+    'maint_image_cleanup_desc' => 'Pregleda vsebino strani in revizij ter ugotovi, katere slike in risbe so v uporabi in katere so odvečne. Preden to poženeš, naredi popolno varnostno kopijo podatkovne zbirke in slik.',
     'maint_delete_images_only_in_revisions' => 'Izbriši tudi slike, ki obstajajo le v starih različicah strani',
     'maint_image_cleanup_run' => 'Zaženi čiščenje',
     'maint_image_cleanup_warning' => 'Najdenih je bilo :count verjetno neuporabljenih slik. Ali si prepričan, da želiš odstraniti izbrane slike?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Koš',
     'recycle_bin_desc' => 'Tu lahko obnovite predmete, ki so bili izbrisani, ali pa jih trajno odstranite s sistema. Ta seznam je nefiltriran, za razliko od podobnih seznamov dejavnosti v sistemu, kjer se uporabljajo filtri dovoljenj.',
     'recycle_bin_deleted_item' => 'Izbrisan element',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'Izbrisal uporabnik',
     'recycle_bin_deleted_at' => 'Čas izbrisa',
     'recycle_bin_permanently_delete' => 'Trajno izbrišem?',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Predmeti, ki naj bodo obnovljeni',
     'recycle_bin_restore_confirm' => 'S tem dejanjem boste izbrisani element, vključno z vsemi podrejenimi elementi, obnovili na prvotno mesto. Če je bilo prvotno mesto od takrat izbrisano in je zdaj v košu, bo treba obnoviti tudi nadrejeni element.',
     'recycle_bin_restore_deleted_parent' => 'Nadrejeni element je bil prav tako izbrisan. Dokler se ne obnovi nadrejenega elementa, ni mogoče obnoviti njemu podrejenih elementov.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'Izbrisano :count skupno število elementov iz koša.',
     'recycle_bin_restore_notification' => 'Obnovljeno :count skupno število elementov iz koša.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Uporabnik',
     'audit_table_event' => 'Dogodek',
     'audit_table_related' => 'Povezani predmet ali podrobnost',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Datum zadnje dejavnosti',
     'audit_date_from' => 'Časovno obdobje od',
     'audit_date_to' => 'Časovno obdobje do',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Podrobnosti vloge',
     'role_name' => 'Naziv vloge',
     'role_desc' => 'Kratki opis vloge',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Zunanje dokazilo ID',
     'role_system' => 'Sistemska dovoljenja',
     'role_manage_users' => 'Upravljanje uporabnikov',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Uredi predloge',
     'role_access_api' => 'API za dostop do sistema',
     'role_manage_settings' => 'Nastavitve za upravljanje',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Sistemska dovoljenja',
     'roles_system_warning' => 'Zavedajte se, da lahko dostop do kateregakoli od zgornjih treh dovoljenj uporabniku omogoči, da spremeni lastne privilegije ali privilegije drugih v sistemu. Vloge s temi dovoljenji dodelite samo zaupanja vrednim uporabnikom.',
     'role_asset_desc' => 'Ta dovoljenja nadzorujejo privzeti dostop do sredstev v sistemu. Dovoljenja za knjige, poglavja in strani bodo razveljavila ta dovoljenja.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Vloge uporabnika',
     'users_role_desc' => 'Izberi vloge, ki bodo dodeljene uporabniku. Če je uporabniku dodeljenih več vlog, se dovoljenja združijo in prejmenjo vsa dovoljenja dodeljenih vlog.',
     'users_password' => 'Uporabniško geslo',
-    'users_password_desc' => 'Nastavite geslo, ki se uporablja za prijavo v aplikacijo. Dolgo mora biti vsaj 6 znakov.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Uporabniku lahko pošljete e-poštno sporočilo s povabilom, ki mu omogoča, da nastavi svoje geslo, ali pa ga nastavite kar sami.',
     'users_send_invite_option' => 'Pošlji uporabniku e-poštno povabilo',
     'users_external_auth_id' => 'Zunanje dokazilo ID',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Ustvari žeton',
     'users_api_tokens_expires' => 'Poteče',
     'users_api_tokens_docs' => 'API dokumentacija',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'Ustvari žeton',
@@ -225,6 +234,34 @@ return [
     'user_api_token_delete_confirm' => 'Ali ste prepričani, da želite izbrisati ta API žeton?',
     'user_api_token_delete_success' => 'API žeton uspešno izbrisan',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -240,6 +277,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -248,6 +286,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -263,6 +302,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

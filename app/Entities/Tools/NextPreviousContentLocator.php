@@ -1,4 +1,6 @@
-<?php namespace BookStack\Entities\Tools;
+<?php
+
+namespace BookStack\Entities\Tools;
 
 use BookStack\Entities\Models\BookChild;
 use BookStack\Entities\Models\Entity;
@@ -48,6 +50,7 @@ class NextPreviousContentLocator
             return get_class($entity) === get_class($this->relativeBookItem)
                 && $entity->id === $this->relativeBookItem->id;
         });
+
         return $index === false ? null : $index;
     }
 
@@ -61,9 +64,10 @@ class NextPreviousContentLocator
         /** @var Entity $item */
         foreach ($bookTree->all() as $item) {
             $flatOrdered->push($item);
-            $childPages = $item->visible_pages ?? [];
+            $childPages = $item->getAttribute('visible_pages') ?? [];
             $flatOrdered = $flatOrdered->concat($childPages);
         }
+
         return $flatOrdered;
     }
 }

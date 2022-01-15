@@ -20,7 +20,7 @@ return [
     'role' => 'Rolle',
     'cover_image' => 'Coverbillede',
     'cover_image_description' => 'Dette billede skal være omtrent 440x250px.',
-    
+
     // Actions
     'actions' => 'Handlinger',
     'view' => 'Vis',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Nulstil',
     'remove' => 'Fjern',
     'add' => 'Tilføj',
+    'configure' => 'Konfigurer',
     'fullscreen' => 'Fuld skærm',
-    'favourite' => 'Favourite',
-    'unfavourite' => 'Unfavourite',
-    'next' => 'Next',
-    'previous' => 'Previous',
+    'favourite' => 'Foretrukken',
+    'unfavourite' => 'Fjern som foretrukken',
+    'next' => 'Næste',
+    'previous' => 'Forrige',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Sorteringsindstillinger',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Ingen aktivitet at vise',
     'no_items' => 'Intet indhold tilgængeligt',
     'back_to_top' => 'Tilbage til toppen',
+    'skip_to_main_content' => 'Spring til indhold',
     'toggle_details' => 'Vis/skjul detaljer',
     'toggle_thumbnails' => 'Vis/skjul miniaturer',
     'details' => 'Detaljer',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Listevisning',
     'default' => 'Standard',
     'breadcrumb' => 'Brødkrumme',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Udvid header menu',

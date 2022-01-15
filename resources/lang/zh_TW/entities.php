@@ -27,8 +27,8 @@ return [
     'images' => '圖片',
     'my_recent_drafts' => '我最近的草稿',
     'my_recently_viewed' => '我最近檢視',
-    'my_most_viewed_favourites' => 'My Most Viewed Favourites',
-    'my_favourites' => 'My Favourites',
+    'my_most_viewed_favourites' => '我瀏覽最多次的最愛',
+    'my_favourites' => '我的最愛',
     'no_pages_viewed' => '您尚未看過任何頁面',
     'no_pages_recently_created' => '最近未建立任何頁面',
     'no_pages_recently_updated' => '最近沒有頁面被更新',
@@ -36,6 +36,7 @@ return [
     'export_html' => '網頁檔案',
     'export_pdf' => 'PDF 檔案',
     'export_text' => '純文字檔案',
+    'export_md' => 'Markdown 檔案',
 
     // Permissions and restrictions
     'permissions' => '權限',
@@ -62,7 +63,7 @@ return [
     'search_permissions_set' => '權限設定',
     'search_created_by_me' => '我建立的',
     'search_updated_by_me' => '我更新的',
-    'search_owned_by_me' => 'Owned by me',
+    'search_owned_by_me' => '我所擁有的',
     'search_date_options' => '日期選項',
     'search_updated_before' => '在此之前更新',
     'search_updated_after' => '在此之後更新',
@@ -98,6 +99,7 @@ return [
     'shelves_permissions' => '書架權限',
     'shelves_permissions_updated' => '書架權限已更新',
     'shelves_permissions_active' => '書架權限已啟用',
+    'shelves_permissions_cascade_warning' => 'Permissions on bookshelves do not automatically cascade to contained books. This is because a book can exist on multiple shelves. Permissions can however be copied down to child books using the option found below.',
     'shelves_copy_permissions_to_books' => '將權限複製到書本',
     'shelves_copy_permissions' => '複製權限',
     'shelves_copy_permissions_explain' => '這會將此書架目前的權限設定套用到所有包含的書本上。在啟用前，請確認您已儲存任何對此書架權限的變更。',
@@ -141,6 +143,8 @@ return [
     'books_sort_chapters_last' => '最後一章',
     'books_sort_show_other' => '顯示其他書本',
     'books_sort_save' => '儲存新順序',
+    'books_copy' => 'Copy Book',
+    'books_copy_success' => 'Book successfully copied',
 
     // Chapters
     'chapter' => '章節',
@@ -159,6 +163,8 @@ return [
     'chapters_move' => '移動章節',
     'chapters_move_named' => '移動章節 :chapterName',
     'chapter_move_success' => '章節移動到 :bookName',
+    'chapters_copy' => 'Copy Chapter',
+    'chapters_copy_success' => 'Chapter successfully copied',
     'chapters_permissions' => '章節權限',
     'chapters_empty' => '本章目前沒有頁面。',
     'chapters_permissions_active' => '章節權限已啟用',
@@ -232,6 +238,7 @@ return [
     'pages_initial_name' => '新頁面',
     'pages_editing_draft_notification' => '您正在編輯最後儲存為 :timeDiff 的草稿。',
     'pages_draft_edited_notification' => '此頁面已經被更新過。建議您放棄此草稿。',
+    'pages_draft_page_changed_since_creation' => 'This page has been updated since this draft was created. It is recommended that you discard this draft or take care not to overwrite any page changes.',
     'pages_draft_edit_active' => [
         'start_a' => ':count 位使用者已經開始編輯此頁面',
         'start_b' => '使用者 :userName 已經開始編輯此頁面',
@@ -255,6 +262,16 @@ return [
     'tags_explain' => "加入一些標籤以更好地對您的內容進行分類。 \n 您可以為標籤分配一個值，以進行更深入的組織。",
     'tags_add' => '新增另一個標籤',
     'tags_remove' => '移除此標籤',
+    'tags_usages' => 'Total tag usages',
+    'tags_assigned_pages' => 'Assigned to Pages',
+    'tags_assigned_chapters' => 'Assigned to Chapters',
+    'tags_assigned_books' => 'Assigned to Books',
+    'tags_assigned_shelves' => 'Assigned to Shelves',
+    'tags_x_unique_values' => ':count unique values',
+    'tags_all_values' => 'All values',
+    'tags_view_tags' => 'View Tags',
+    'tags_view_existing_tags' => 'View existing tags',
+    'tags_list_empty_hint' => 'Tags can be assigned via the page editor sidebar or while editing the details of a book, chapter or shelf.',
     'attachments' => '附件',
     'attachments_explain' => '上傳一些檔案或附加連結以顯示在您的網頁上。將顯示在在頁面的側邊欄。',
     'attachments_explain_instant_save' => '此處的變動將會立刻儲存。',
@@ -318,5 +335,13 @@ return [
     'revision_delete_confirm' => '您確定要刪除此修訂版本嗎？',
     'revision_restore_confirm' => '您確定要還原此修訂版本嗎？ 目前頁面內容將被替換。',
     'revision_delete_success' => '修訂版本已刪除',
-    'revision_cannot_delete_latest' => '無法刪除最新修訂版本。'
+    'revision_cannot_delete_latest' => '無法刪除最新修訂版本。',
+
+    // Copy view
+    'copy_consider' => 'Please consider the below when copying content.',
+    'copy_consider_permissions' => 'Custom permission settings will not be copied.',
+    'copy_consider_owner' => 'You will become the owner of all copied content.',
+    'copy_consider_images' => 'Page image files will not be duplicated & the original images will retain their relation to the page they were originally uploaded to.',
+    'copy_consider_attachments' => 'Page attachments will not be copied.',
+    'copy_consider_access' => 'A change of location, owner or permissions may result in this content being accessible to those previously without access.',
 ];

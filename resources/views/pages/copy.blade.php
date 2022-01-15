@@ -1,11 +1,11 @@
-@extends('simple-layout')
+@extends('layouts.simple')
 
 @section('body')
 
     <div class="container small">
 
         <div class="my-s">
-            @include('partials.breadcrumbs', ['crumbs' => [
+            @include('entities.breadcrumbs', ['crumbs' => [
                 $page->book,
                 $page->chapter,
                 $page,
@@ -33,9 +33,11 @@
                         <label for="entity_selection">{{ trans('entities.pages_copy_desination') }}</label>
                     </button>
                     <div class="collapse-content" collapsible-content>
-                        @include('components.entity-selector', ['name' => 'entity_selection', 'selectorSize' => 'large', 'entityTypes' => 'book,chapter', 'entityPermission' => 'page-create'])
+                        @include('entities.selector', ['name' => 'entity_selection', 'selectorSize' => 'large', 'entityTypes' => 'book,chapter', 'entityPermission' => 'page-create'])
                     </div>
                 </div>
+
+                @include('entities.copy-considerations')
 
                 <div class="form-group text-right">
                     <a href="{{ $page->getUrl() }}" class="button outline">{{ trans('common.cancel') }}</a>

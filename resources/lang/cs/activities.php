@@ -21,8 +21,8 @@ return [
     'chapter_create_notification' => 'Kapitola byla úspěšně vytvořena',
     'chapter_update'              => 'aktualizoval/a kapitolu',
     'chapter_update_notification' => 'Kapitola byla úspěšně aktualizována',
-    'chapter_delete'              => 'smazal/a kapitolu',
-    'chapter_delete_notification' => 'Kapitola byla úspěšně smazána',
+    'chapter_delete'              => 'odstranila/a kapitolu',
+    'chapter_delete_notification' => 'Kapitola byla úspěšně odstraněna',
     'chapter_move'                => 'přesunul/a kapitolu',
 
     // Books
@@ -30,8 +30,8 @@ return [
     'book_create_notification'    => 'Kniha byla úspěšně vytvořena',
     'book_update'                 => 'aktualizoval/a knihu',
     'book_update_notification'    => 'Kniha byla úspěšně aktualizována',
-    'book_delete'                 => 'smazal/a knihu',
-    'book_delete_notification'    => 'Kniha byla úspěšně smazána',
+    'book_delete'                 => 'odstranil/a knihu',
+    'book_delete_notification'    => 'Kniha byla úspěšně odstraněna',
     'book_sort'                   => 'seřadil/a knihu',
     'book_sort_notification'      => 'Kniha byla úspěšně seřazena',
 
@@ -41,13 +41,25 @@ return [
     'bookshelf_update'                 => 'aktualizoval/a knihovnu',
     'bookshelf_update_notification'    => 'Knihovna byla úspěšně aktualizována',
     'bookshelf_delete'                 => 'odstranil/a knihovnu',
-    'bookshelf_delete_notification'    => 'Knihovna byla úspěšně odstraněna',
+    'bookshelf_delete_notification'    => 'Knihovna byla úspěšně smazána',
 
     // Favourites
-    'favourite_add_notification' => '":name" has been added to your favourites',
-    'favourite_remove_notification' => '":name" has been removed from your favourites',
+    'favourite_add_notification' => '":name" byla přidána do Vašich oblíbených',
+    'favourite_remove_notification' => '":name" byla odstraněna z Vašich oblíbených',
+
+    // MFA
+    'mfa_setup_method_notification' => 'Vícefaktorová metoda byla úspěšně nakonfigurována',
+    'mfa_remove_method_notification' => 'Vícefaktorová metoda byla úspěšně odstraněna',
+
+    // Webhooks
+    'webhook_create' => 'vytvořil/a webhook',
+    'webhook_create_notification' => 'Webhook byl úspěšně vytvořen',
+    'webhook_update' => 'aktualizoval/a webhook',
+    'webhook_update_notification' => 'Webhook byl úspěšně aktualizován',
+    'webhook_delete' => 'odstranil/a webhook',
+    'webhook_delete_notification' => 'Webhook byl úspěšně odstraněn',
 
     // Other
     'commented_on'                => 'okomentoval/a',
-    'permissions_update'          => 'updated permissions',
+    'permissions_update'          => 'oprávnění upravena',
 ];

@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Bakım',
     'maint_image_cleanup' => 'Görselleri Temizle',
-    'maint_image_cleanup_desc' => "Sayfaları ve revizyon içeriklerini tarayarak hangi görsellerin ve çizimlerin kullanımda olduğunu ve hangilerinin gereksiz olduğunu tespit eder. Bunu başlatmadan önce veritabanının ve görsellerin tam bir yedeğinin alındığından emin olun.",
+    'maint_image_cleanup_desc' => 'Sayfaları ve revizyon içeriklerini tarayarak hangi görsellerin ve çizimlerin kullanımda olduğunu ve hangilerinin gereksiz olduğunu tespit eder. Bunu başlatmadan önce veritabanının ve görsellerin tam bir yedeğinin alındığından emin olun.',
     'maint_delete_images_only_in_revisions' => 'Eski sayfa revizyonlarındaki görselleri de sil',
     'maint_image_cleanup_run' => 'Temizliği Başlat',
     'maint_image_cleanup_warning' => 'Muhtemelen kullanılmayan :count adet görsel bulundu. Bu görselleri silmek istediğinize emin misiniz?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Geri Dönüşüm Kutusu',
     'recycle_bin_desc' => 'Burada silinen öğeleri geri yükleyebilir veya bunları sistemden kalıcı olarak kaldırmayı seçebilirsiniz. Bu liste, izin filtrelerinin uygulandığı sistemdeki benzer etkinlik listelerinden farklı olarak filtrelenmez.',
     'recycle_bin_deleted_item' => 'Silinen öge',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'Tarafından silindi',
     'recycle_bin_deleted_at' => 'Silinme Zamanı',
     'recycle_bin_permanently_delete' => 'Kalıcı Olarak Sil',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Geri Yüklenecek Öğeler',
     'recycle_bin_restore_confirm' => 'Bu eylem, tüm alt öğeler dahil olmak üzere silinen öğeyi orijinal konumlarına geri yükleyecektir. Orijinal konum o zamandan beri silinmişse ve şimdi geri dönüşüm kutusunda bulunuyorsa, üst öğenin de geri yüklenmesi gerekecektir.',
     'recycle_bin_restore_deleted_parent' => 'Bu öğenin üst öğesi de silindi. Bunlar, üst öğe de geri yüklenene kadar silinmiş olarak kalacaktır.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'Deleted :count total items from the recycle bin.',
     'recycle_bin_restore_notification' => 'Restored :count total items from the recycle bin.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Kullanıcı',
     'audit_table_event' => 'Etkinlik',
     'audit_table_related' => 'İlgili Öğe veya Detay',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Aktivite Tarihi',
     'audit_date_from' => 'Tarih Aralığından',
     'audit_date_to' => 'Tarih Aralığına',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Rol Detayları',
     'role_name' => 'Rol Adı',
     'role_desc' => 'Rolün Kısa Tanımı',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Harici Doğrulama Kimlikleri',
     'role_system' => 'Sistem Yetkileri',
     'role_manage_users' => 'Kullanıcıları yönet',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Sayfa şablonlarını yönet',
     'role_access_api' => 'Sistem programlama arayüzüne (API) eriş',
     'role_manage_settings' => 'Uygulama ayarlarını yönet',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Varlık Yetkileri',
     'roles_system_warning' => 'Yukarıdaki üç izinden herhangi birine erişimin, kullanıcının kendi ayrıcalıklarını veya sistemdeki diğerlerinin ayrıcalıklarını değiştirmesine izin verebileceğini unutmayın. Yalnızca bu izinlere sahip rolleri güvenilir kullanıcılara atayın.',
     'role_asset_desc' => 'Bu izinler, sistem içindeki varlıklara varsayılan erişim izinlerini ayarlar. Kitaplar, bölümler ve sayfalar üzerindeki izinler, buradaki izinleri geçersiz kılar.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Kullanıcı Rolleri',
     'users_role_desc' => 'Bu kullanıcının hangi rollere atanacağını belirleyin. Birden fazla role sahip kullanıcılar, atandığı bütün rollerin yetkilerine sahip olurlar.',
     'users_password' => 'Kullanıcı Şifresi',
-    'users_password_desc' => 'Kullanıcının giriş yaparken kullanacağı bir şifre belirleyin. Şifre en az 6 karakterden oluşmalıdır.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Bu kullanıcıya kendi şifresini belirleyebilmesi için bir davetiye e-postası gönderebilir ya da kullanıcının şifresini kendiniz belirleyebilirsiniz.',
     'users_send_invite_option' => 'Kullanıcıya davetiye e-postası gönder',
     'users_external_auth_id' => 'Harici Doğrulama Kimliği',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Anahtar Oluştur',
     'users_api_tokens_expires' => 'Bitiş süresi',
     'users_api_tokens_docs' => 'API Dokümantasyonu',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'API Anahtarı Oluştur',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Bu API anahtarını silmek istediğinize emin misiniz?',
     'user_api_token_delete_success' => 'API anahtarı başarıyla silindi',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'İbranice',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

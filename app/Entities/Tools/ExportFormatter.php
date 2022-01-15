@@ -1,44 +1,52 @@
-<?php namespace BookStack\Entities\Tools;
+<?php
+
+namespace BookStack\Entities\Tools;
 
 use BookStack\Entities\Models\Book;
 use BookStack\Entities\Models\Chapter;
 use BookStack\Entities\Models\Page;
+use BookStack\Entities\Tools\Markdown\HtmlToMarkdown;
 use BookStack\Uploads\ImageService;
-use DomPDF;
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
 use Exception;
-use SnappyPDF;
 use Throwable;
 
 class ExportFormatter
 {
-
     protected $imageService;
+    protected $pdfGenerator;
 
     /**
      * ExportService constructor.
      */
-    public function __construct(ImageService $imageService)
+    public function __construct(ImageService $imageService, PdfGenerator $pdfGenerator)
     {
         $this->imageService = $imageService;
+        $this->pdfGenerator = $pdfGenerator;
     }
 
     /**
      * Convert a page to a self-contained HTML file.
      * Includes required CSS & image content. Images are base64 encoded into the HTML.
+     *
      * @throws Throwable
      */
     public function pageToContainedHtml(Page $page)
     {
         $page->html = (new PageContent($page))->render();
         $pageHtml = view('pages.export', [
-            'page' => $page,
+            'page'   => $page,
             'format' => 'html',
         ])->render();
+
         return $this->containHtml($pageHtml);
     }
 
     /**
      * Convert a chapter to a self-contained HTML file.
+     *
      * @throws Throwable
      */
     public function chapterToContainedHtml(Chapter $chapter)
@@ -49,43 +57,49 @@ class ExportFormatter
         });
         $html = view('chapters.export', [
             'chapter' => $chapter,
-            'pages' => $pages,
-            'format' => 'html',
+            'pages'   => $pages,
+            'format'  => 'html',
         ])->render();
+
         return $this->containHtml($html);
     }
 
     /**
      * Convert a book to a self-contained HTML file.
+     *
      * @throws Throwable
      */
     public function bookToContainedHtml(Book $book)
     {
         $bookTree = (new BookContents($book))->getTree(false, true);
         $html = view('books.export', [
-            'book' => $book,
+            'book'         => $book,
             'bookChildren' => $bookTree,
-            'format' => 'html',
+            'format'       => 'html',
         ])->render();
+
         return $this->containHtml($html);
     }
 
     /**
      * Convert a page to a PDF file.
+     *
      * @throws Throwable
      */
     public function pageToPdf(Page $page)
     {
         $page->html = (new PageContent($page))->render();
         $html = view('pages.export', [
-            'page' => $page,
+            'page'   => $page,
             'format' => 'pdf',
         ])->render();
+
         return $this->htmlToPdf($html);
     }
 
     /**
      * Convert a chapter to a PDF file.
+     *
      * @throws Throwable
      */
     public function chapterToPdf(Chapter $chapter)
@@ -97,8 +111,8 @@ class ExportFormatter
 
         $html = view('chapters.export', [
             'chapter' => $chapter,
-            'pages' => $pages,
-            'format' => 'pdf',
+            'pages'   => $pages,
+            'format'  => 'pdf',
         ])->render();
 
         return $this->htmlToPdf($html);
@@ -106,38 +120,67 @@ class ExportFormatter
 
     /**
      * Convert a book to a PDF file.
+     *
      * @throws Throwable
      */
     public function bookToPdf(Book $book)
     {
         $bookTree = (new BookContents($book))->getTree(false, true);
         $html = view('books.export', [
-            'book' => $book,
+            'book'         => $book,
             'bookChildren' => $bookTree,
-            'format' => 'pdf',
+            'format'       => 'pdf',
         ])->render();
+
         return $this->htmlToPdf($html);
     }
 
     /**
      * Convert normal web-page HTML to a PDF.
+     *
      * @throws Exception
      */
     protected function htmlToPdf(string $html): string
     {
-        $containedHtml = $this->containHtml($html);
-        $useWKHTML = config('snappy.pdf.binary') !== false;
-        if ($useWKHTML) {
-            $pdf = SnappyPDF::loadHTML($containedHtml);
-            $pdf->setOption('print-media-type', true);
-        } else {
-            $pdf = DomPDF::loadHTML($containedHtml);
+        $html = $this->containHtml($html);
+        $html = $this->replaceIframesWithLinks($html);
+
+        return $this->pdfGenerator->fromHtml($html);
+    }
+
+    /**
+     * Within the given HTML content, replace any iframe elements
+     * with anchor links within paragraph blocks.
+     */
+    protected function replaceIframesWithLinks(string $html): string
+    {
+        libxml_use_internal_errors(true);
+
+        $doc = new DOMDocument();
+        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+        $xPath = new DOMXPath($doc);
+
+        $iframes = $xPath->query('//iframe');
+        /** @var DOMElement $iframe */
+        foreach ($iframes as $iframe) {
+            $link = $iframe->getAttribute('src');
+            if (strpos($link, '//') === 0) {
+                $link = 'https:' . $link;
+            }
+
+            $anchor = $doc->createElement('a', $link);
+            $anchor->setAttribute('href', $link);
+            $paragraph = $doc->createElement('p');
+            $paragraph->appendChild($anchor);
+            $iframe->parentNode->replaceChild($paragraph, $iframe);
         }
-        return $pdf->output();
+
+        return $doc->saveHTML();
     }
 
     /**
      * Bundle of the contents of a html file to be self-contained.
+     *
      * @throws Exception
      */
     protected function containHtml(string $htmlContent): string
@@ -194,6 +237,7 @@ class ExportFormatter
         $text = html_entity_decode($text);
         // Add title
         $text = $page->name . "\n\n" . $text;
+
         return $text;
     }
 
@@ -207,6 +251,7 @@ class ExportFormatter
         foreach ($chapter->getVisiblePages() as $page) {
             $text .= $this->pageToPlainText($page);
         }
+
         return $text;
     }
 
@@ -224,6 +269,51 @@ class ExportFormatter
                 $text .= $this->pageToPlainText($bookChild);
             }
         }
+
+        return $text;
+    }
+
+    /**
+     * Convert a page to a Markdown file.
+     */
+    public function pageToMarkdown(Page $page): string
+    {
+        if ($page->markdown) {
+            return '# ' . $page->name . "\n\n" . $page->markdown;
+        }
+
+        return '# ' . $page->name . "\n\n" . (new HtmlToMarkdown($page->html))->convert();
+    }
+
+    /**
+     * Convert a chapter to a Markdown file.
+     */
+    public function chapterToMarkdown(Chapter $chapter): string
+    {
+        $text = '# ' . $chapter->name . "\n\n";
+        $text .= $chapter->description . "\n\n";
+        foreach ($chapter->pages as $page) {
+            $text .= $this->pageToMarkdown($page) . "\n\n";
+        }
+
+        return $text;
+    }
+
+    /**
+     * Convert a book into a plain text string.
+     */
+    public function bookToMarkdown(Book $book): string
+    {
+        $bookTree = (new BookContents($book))->getTree(false, true);
+        $text = '# ' . $book->name . "\n\n";
+        foreach ($bookTree as $bookChild) {
+            if ($bookChild instanceof Chapter) {
+                $text .= $this->chapterToMarkdown($bookChild);
+            } else {
+                $text .= $this->pageToMarkdown($bookChild);
+            }
+        }
+
         return $text;
     }
 }
