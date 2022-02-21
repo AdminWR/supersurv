@@ -20,7 +20,7 @@ return [
     'role' => 'Roll',
     'cover_image' => 'Omslagsbild',
     'cover_image_description' => 'Bilden bör vara cirka 440x250px stor.',
-    
+
     // Actions
     'actions' => 'Åtgärder',
     'view' => 'Visa',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Återställ',
     'remove' => 'Radera',
     'add' => 'Lägg till',
+    'configure' => 'Configure',
     'fullscreen' => 'Helskärm',
     'favourite' => 'Favorit',
     'unfavourite' => 'Ta bort favorit',
     'next' => 'Nästa',
     'previous' => 'Föregående',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Sorteringsalternativ',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Ingen aktivitet att visa',
     'no_items' => 'Inga tillgängliga föremål',
     'back_to_top' => 'Tillbaka till toppen',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'Växla detaljer',
     'toggle_thumbnails' => 'Växla miniatyrer',
     'details' => 'Information',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Listvy',
     'default' => 'Förvald',
     'breadcrumb' => 'Brödsmula',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expandera sidhuvudsmenyn',

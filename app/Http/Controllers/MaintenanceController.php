@@ -25,7 +25,7 @@ class MaintenanceController extends Controller
         $recycleStats = (new TrashCan())->getTrashedCounts();
 
         return view('settings.maintenance', [
-            'version' => $version,
+            'version'      => $version,
             'recycleStats' => $recycleStats,
         ]);
     }
@@ -45,6 +45,7 @@ class MaintenanceController extends Controller
         $deleteCount = count($imagesToDelete);
         if ($deleteCount === 0) {
             $this->showWarningNotification(trans('settings.maint_image_cleanup_nothing_found'));
+
             return redirect('/settings/maintenance')->withInput();
         }
 
@@ -66,7 +67,7 @@ class MaintenanceController extends Controller
         $this->logActivity(ActivityType::MAINTENANCE_ACTION_RUN, 'send-test-email');
 
         try {
-            user()->notify(new TestEmail());
+            user()->notifyNow(new TestEmail());
             $this->showSuccessNotification(trans('settings.maint_send_test_email_success', ['address' => user()->email]));
         } catch (\Exception $exception) {
             $errorMessage = trans('errors.maintenance_test_email_failure') . "\n" . $exception->getMessage();

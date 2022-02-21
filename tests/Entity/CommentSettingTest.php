@@ -1,4 +1,6 @@
-<?php namespace Tests\Entity;
+<?php
+
+namespace Tests\Entity;
 
 use BookStack\Entities\Models\Page;
 use Tests\TestCase;
@@ -7,7 +9,7 @@ class CommentSettingTest extends TestCase
 {
     protected $page;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->page = Page::query()->first();

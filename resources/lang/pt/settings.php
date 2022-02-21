@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Manutenção',
     'maint_image_cleanup' => 'Limpeza de Imagens',
-    'maint_image_cleanup_desc' => "Examina páginas e reviste os seus conteúdos para verificar quais imagens e desenhos estão atualmente em uso e quais são redundantes. Certifique-se de criar uma cópia de segurança completa da base de dados e imagens antes de executar esta ação.",
+    'maint_image_cleanup_desc' => 'Examina páginas e reviste os seus conteúdos para verificar quais imagens e desenhos estão atualmente em uso e quais são redundantes. Certifique-se de criar uma cópia de segurança completa da base de dados e imagens antes de executar esta ação.',
     'maint_delete_images_only_in_revisions' => 'Eliminar também imagens que existam apenas em revisões de página antigas',
     'maint_image_cleanup_run' => 'Executar Limpeza',
     'maint_image_cleanup_warning' => ':count imagens potencialmente não utilizadas foram encontradas. Tem certeza de que deseja eliminar estas imagens?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Reciclagem',
     'recycle_bin_desc' => 'Aqui pode restaurar itens que foram eliminados ou eliminá-los permanentemente do sistema. Esta lista não é filtrada diferentemente de listas de atividades parecidas no sistema onde filtros de permissão são aplicados.',
     'recycle_bin_deleted_item' => 'Item eliminado',
+    'recycle_bin_deleted_parent' => 'Parente',
     'recycle_bin_deleted_by' => 'Eliminado por',
     'recycle_bin_deleted_at' => 'Data de Eliminação',
     'recycle_bin_permanently_delete' => 'Eliminar permanentemente',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Itens a serem Restaurados',
     'recycle_bin_restore_confirm' => 'Esta ação irá restaurar o item excluído, inclusive quaisquer elementos filhos, para o seu local original. Se a localização original tiver, entretanto, sido eliminada e estiver agora na reciclagem, o item pai também precisará de ser restaurado.',
     'recycle_bin_restore_deleted_parent' => 'O parente deste item foi também eliminado. Estes permanecerão eliminados até que o parente seja também restaurado.',
+    'recycle_bin_restore_parent' => 'Restaurar Parente',
     'recycle_bin_destroy_notification' => 'Eliminados no total :count itens da lixeira.',
     'recycle_bin_restore_notification' => 'Restaurados no total :count itens da reciclagem.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Utilizador',
     'audit_table_event' => 'Evento',
     'audit_table_related' => 'Item ou Detalhe Relacionado',
+    'audit_table_ip' => 'Endereço de IP',
     'audit_table_date' => 'Data da Atividade',
     'audit_date_from' => 'Intervalo De',
     'audit_date_to' => 'Intervalo Até',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Detalhes do Cargo',
     'role_name' => 'Nome do Cargo',
     'role_desc' => 'Breve Descrição do Cargo',
+    'role_mfa_enforced' => 'Exige autenticação de múltiplos fatores',
     'role_external_auth_id' => 'IDs de Autenticação Externa',
     'role_system' => 'Permissões do Sistema',
     'role_manage_users' => 'Gerir utilizadores',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Gerir modelos de página',
     'role_access_api' => 'Aceder à API do sistema',
     'role_manage_settings' => 'Gerir as configurações da aplicação',
+    'role_export_content' => 'Exportar conteúdo',
     'role_asset' => 'Permissões de Ativos',
     'roles_system_warning' => 'Esteja ciente de que o acesso a qualquer uma das três permissões acima pode permitir que um utilizador altere os seus próprios privilégios ou privilégios de outros no sistema. Apenas atribua cargos com essas permissões a utilizadores de confiança.',
     'role_asset_desc' => 'Estas permissões controlam o acesso padrão para os ativos dentro do sistema. Permissões em Livros, Capítulos e Páginas serão sobrescritas por estas permissões.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Cargos do Utilizador',
     'users_role_desc' => 'Selecione os cargos aos quais este utilizador será vinculado. Se um utilizador for vinculado a múltiplos cargos, as suas permissões serão empilhadas e ele receberá todas as habilidades dos cargos atribuídos.',
     'users_password' => 'Palavra-passe do Utilizador',
-    'users_password_desc' => 'Defina uma palavra-passe utilizada para efetuar a autenticação na aplicação. Esta deve ter pelo menos 6 caracteres.',
+    'users_password_desc' => 'Defina uma palavra-passe para efetuar a autenticação na aplicação. Esta deve ter pelo menos 8 caracteres.',
     'users_send_invite_text' => 'Pode escolher enviar a este utilizador um convite por e-mail que o possibilitará definir a sua própria palavra-passe, ou defina você mesmo uma.',
     'users_send_invite_option' => 'Enviar convite por e-mail',
     'users_external_auth_id' => 'ID de Autenticação Externa',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Criar Token',
     'users_api_tokens_expires' => 'Expira',
     'users_api_tokens_docs' => 'Documentação da API',
+    'users_mfa' => 'Autenticação Multi-fator',
+    'users_mfa_desc' => 'Configure a autenticação multi-fatores como uma camada extra de segurança para sua conta de utilizador.',
+    'users_mfa_x_methods' => ':count método configurado|:count métodos configurados',
+    'users_mfa_configure' => 'Configurar Métodos',
 
     // API Tokens
     'user_api_token_create' => 'Criar Token de API',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Tem certeza que deseja eliminar este token de API?',
     'user_api_token_delete_success' => 'Token de API excluído com sucesso',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Criar um novo webhook',
+    'webhooks_none_created' => 'Ainda nenhum webhooks foi criado.',
+    'webhooks_edit' => 'Editar Webhook',
+    'webhooks_save' => 'Guardar Webhook',
+    'webhooks_details' => 'Detalhes do Webhook',
+    'webhooks_details_desc' => 'Providencie um nome fácil e um endpoint POST para onde os dados do webhook serão enviados.',
+    'webhooks_events' => 'Eventos de Webhook',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'Todos os eventos do sistema',
+    'webhooks_name' => 'Nome do Webhook',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Endpoint do Webhook',
+    'webhooks_active' => 'Webhook ativo',
+    'webhook_events_table_header' => 'Eventos',
+    'webhooks_delete' => 'Eliminar Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Tem a certeza que deseja eliminar este webhook?',
+    'webhooks_format_example' => 'Exemplo de formato Webhook',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

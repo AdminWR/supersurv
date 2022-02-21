@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Underhåll',
     'maint_image_cleanup' => 'Rensa bilder',
-    'maint_image_cleanup_desc' => "Söker igenom innehåll i sidor & revisioner för att se vilka bilder och teckningar som är i bruk och vilka som är överflödiga. Se till att ta en komplett backup av databas och bilder innan du kör detta.",
+    'maint_image_cleanup_desc' => 'Söker igenom innehåll i sidor & revisioner för att se vilka bilder och teckningar som är i bruk och vilka som är överflödiga. Se till att ta en komplett backup av databas och bilder innan du kör detta.',
     'maint_delete_images_only_in_revisions' => 'Ta också bort bilder som bara finns i gamla sidrevideringar',
     'maint_image_cleanup_run' => 'Kör rensning',
     'maint_image_cleanup_warning' => 'Hittade :count bilder som potentiellt inte används. Vill du verkligen ta bort dessa bilder?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Papperskorgen',
     'recycle_bin_desc' => 'Här kan du återställa objekt som har tagits bort eller välja att permanent ta bort dem från systemet. Denna lista är ofiltrerad till skillnad från liknande aktivitetslistor i systemet där behörighetsfilter tillämpas.',
     'recycle_bin_deleted_item' => 'Raderat objekt',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'Borttagen av',
     'recycle_bin_deleted_at' => 'Tid för borttagning',
     'recycle_bin_permanently_delete' => 'Radera permanent',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Objekt som ska återställas',
     'recycle_bin_restore_confirm' => 'Denna åtgärd kommer att återställa det raderade objektet, inklusive alla underordnade element, till deras ursprungliga plats. Om den ursprungliga platsen har tagits bort sedan dess, och är nu i papperskorgen, kommer det överordnade objektet också att behöva återställas.',
     'recycle_bin_restore_deleted_parent' => 'Föräldern till det här objektet har också tagits bort. Dessa kommer att förbli raderade tills den förälder är återställd.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'Raderade :count totala objekt från papperskorgen.',
     'recycle_bin_restore_notification' => 'Återställt :count totala objekt från papperskorgen.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Användare',
     'audit_table_event' => 'Händelse',
     'audit_table_related' => 'Relaterat objekt eller detalj',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Datum för senaste aktiviteten',
     'audit_date_from' => 'Datumintervall från',
     'audit_date_to' => 'Datumintervall till',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Om rollen',
     'role_name' => 'Rollens namn',
     'role_desc' => 'Kort beskrivning av rollen',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Externa autentiserings-ID:n',
     'role_system' => 'Systemrättigheter',
     'role_manage_users' => 'Hanter användare',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Hantera mallar',
     'role_access_api' => 'Åtkomst till systemets API',
     'role_manage_settings' => 'Hantera appinställningar',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Tillgång till innehåll',
     'roles_system_warning' => 'Var medveten om att åtkomst till någon av ovanstående tre behörigheter kan tillåta en användare att ändra sina egna rättigheter eller andras rättigheter i systemet. Tilldela endast roller med dessa behörigheter till betrodda användare.',
     'role_asset_desc' => 'Det här är standardinställningarna för allt innehåll i systemet. Eventuella anpassade rättigheter på böcker, kapitel och sidor skriver över dessa inställningar.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Användarroller',
     'users_role_desc' => 'Välj vilka roller den här användaren ska tilldelas. Om en användare har tilldelats flera roller kommer behörigheterna från dessa roller att staplas och de kommer att få alla rättigheter i de tilldelade rollerna.',
     'users_password' => 'Användarlösenord',
-    'users_password_desc' => 'Ange ett lösenord som ska användas för att logga in på sidan. Lösenordet måste vara minst 5 tecken långt.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Du kan välja att skicka denna användare ett e-postmeddelande som tillåter dem att ställa in sitt eget lösenord, eller så kan du ställa in deras lösenord själv.',
     'users_send_invite_option' => 'Skicka e-post med inbjudan',
     'users_external_auth_id' => 'Externt ID för autentisering',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Skapa token',
     'users_api_tokens_expires' => 'Förfaller',
     'users_api_tokens_docs' => 'API-dokumentation',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'Skapa API-nyckel',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Är du säker på att du vill ta bort denna API-token?',
     'user_api_token_delete_success' => 'API-token har tagits bort',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

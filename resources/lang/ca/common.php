@@ -20,7 +20,7 @@ return [
     'role' => 'Rol',
     'cover_image' => 'Imatge de portada',
     'cover_image_description' => 'Aquesta imatge hauria de fer aproximadament 440x250 px.',
-    
+
     // Actions
     'actions' => 'Accions',
     'view' => 'Visualitza',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Reinicialitza',
     'remove' => 'Elimina',
     'add' => 'Afegeix',
+    'configure' => 'Configure',
     'fullscreen' => 'Pantalla completa',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Opcions d\'ordenació',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'No hi ha activitat',
     'no_items' => 'No hi ha cap element',
     'back_to_top' => 'Torna a dalt',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'Commuta els detalls',
     'toggle_thumbnails' => 'Commuta les miniatures',
     'details' => 'Detalls',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Visualització en llista',
     'default' => 'Per defecte',
     'breadcrumb' => 'Ruta de navegació',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expand Header Menu',

@@ -47,6 +47,18 @@ return [
     'favourite_add_notification' => '".name" ha sido añadido a sus favoritos',
     'favourite_remove_notification' => '".name" ha sido eliminado de sus favoritos',
 
+    // MFA
+    'mfa_setup_method_notification' => 'Método de Autenticación en Dos Pasos configurado correctamente',
+    'mfa_remove_method_notification' => 'Método de Autenticación en Dos Pasos eliminado correctamente',
+
+    // Webhooks
+    'webhook_create' => 'webhook creado',
+    'webhook_create_notification' => 'Webhook creado correctamente',
+    'webhook_update' => 'webhook actualizado',
+    'webhook_update_notification' => 'Webhook actualizado correctamente',
+    'webhook_delete' => 'webhook eliminado',
+    'webhook_delete_notification' => 'Webhook eliminado correctamente',
+
     // Other
     'commented_on'                => 'comentada el',
     'permissions_update'          => 'permisos actualizados',

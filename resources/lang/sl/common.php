@@ -20,7 +20,7 @@ return [
     'role' => 'Vloga',
     'cover_image' => 'Naslovna slika',
     'cover_image_description' => 'Slika naj bo velika približno 440x250px.',
-    
+
     // Actions
     'actions' => 'Dejanja',
     'view' => 'Pogled',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Ponastavi',
     'remove' => 'Odstrani',
     'add' => 'Dodaj',
+    'configure' => 'Configure',
     'fullscreen' => 'Celozaslonski način',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Možnosti razvrščanja',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Ni aktivnosti za prikaz',
     'no_items' => 'Na voljo ni nobenega elementa',
     'back_to_top' => 'Nazaj na vrh',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'Preklopi podrobnosti',
     'toggle_thumbnails' => 'Preklopi sličice',
     'details' => 'Podrobnosti',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Seznam',
     'default' => 'Privzeto',
     'breadcrumb' => 'Pot',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expand Header Menu',

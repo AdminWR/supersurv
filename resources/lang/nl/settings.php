@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Onderhoud',
     'maint_image_cleanup' => 'Afbeeldingen opschonen',
-    'maint_image_cleanup_desc' => "Scant pagina- en revisie inhoud om te controleren welke afbeeldingen en tekeningen momenteel worden gebruikt en welke afbeeldingen overbodig zijn. Zorg ervoor dat je een volledige database en afbeelding backup maakt voordat je dit uitvoert.",
+    'maint_image_cleanup_desc' => 'Scant pagina- en revisie inhoud om te controleren welke afbeeldingen en tekeningen momenteel worden gebruikt en welke afbeeldingen overbodig zijn. Zorg ervoor dat je een volledige database en afbeelding backup maakt voordat je dit uitvoert.',
     'maint_delete_images_only_in_revisions' => 'Ook afbeeldingen die alleen in oude pagina revisies bestaan verwijderen',
     'maint_image_cleanup_run' => 'Opschonen uitvoeren',
     'maint_image_cleanup_warning' => ':count potentieel ongebruikte afbeeldingen gevonden. Weet u zeker dat u deze afbeeldingen wilt verwijderen?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Prullenbak',
     'recycle_bin_desc' => 'Hier kunt u items herstellen die zijn verwijderd of kiezen om ze permanent te verwijderen uit het systeem. Deze lijst is niet gefilterd, in tegenstelling tot vergelijkbare activiteitenlijsten in het systeem waar rechtenfilters worden toegepast.',
     'recycle_bin_deleted_item' => 'Verwijderde Item',
+    'recycle_bin_deleted_parent' => 'Bovenliggende',
     'recycle_bin_deleted_by' => 'Verwijderd door',
     'recycle_bin_deleted_at' => 'Verwijdert op',
     'recycle_bin_permanently_delete' => 'Permanent verwijderen',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Items te herstellen',
     'recycle_bin_restore_confirm' => 'Deze actie herstelt het verwijderde item, inclusief alle onderliggende elementen, op hun oorspronkelijke locatie. Als de oorspronkelijke locatie sindsdien is verwijderd en zich nu in de prullenbak bevindt, zal ook het bovenliggende item moeten worden hersteld.',
     'recycle_bin_restore_deleted_parent' => 'De bovenliggende map van dit item is ook verwijderd. Deze zal worden verwijderd totdat het bovenliggende item ook is hersteld.',
+    'recycle_bin_restore_parent' => 'Herstel bovenliggende',
     'recycle_bin_destroy_notification' => 'Verwijderde totaal :count items uit de prullenbak.',
     'recycle_bin_restore_notification' => 'Herstelde totaal :count items uit de prullenbak.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Gebruiker',
     'audit_table_event' => 'Gebeurtenis',
     'audit_table_related' => 'Gerelateerd Item of Detail',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'Activiteit datum',
     'audit_date_from' => 'Datum bereik vanaf',
     'audit_date_to' => 'Datum bereik tot',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Rol Details',
     'role_name' => 'Rolnaam',
     'role_desc' => 'Korte beschrijving van de rol',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'Externe authenticatie ID\'s',
     'role_system' => 'Systeem Permissies',
     'role_manage_users' => 'Gebruikers beheren',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Paginasjablonen beheren',
     'role_access_api' => 'Ga naar systeem API',
     'role_manage_settings' => 'Beheer app instellingen',
+    'role_export_content' => 'Export content',
     'role_asset' => 'Asset Permissies',
     'roles_system_warning' => 'Wees ervan bewust dat toegang tot een van de bovengenoemde drie machtigingen een gebruiker in staat kan stellen zijn eigen privileges of de privileges van anderen in het systeem te wijzigen. Wijs alleen rollen toe met deze machtigingen aan vertrouwde gebruikers.',
     'role_asset_desc' => 'Deze permissies bepalen de standaardtoegangsrechten. Permissies op boeken, hoofdstukken en pagina\'s overschrijven deze instelling.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Gebruikersrollen',
     'users_role_desc' => 'Selecteer aan welke rollen deze gebruiker zal worden toegewezen. Als een gebruiker aan meerdere rollen wordt toegewezen worden de machtigingen van deze rollen samengevoegd en krijgen ze alle machtigingen van de toegewezen rollen.',
     'users_password' => 'Wachtwoord gebruiker',
-    'users_password_desc' => 'Stel een wachtwoord in dat gebruikt wordt om in te loggen op de applicatie. Dit moet minstens 6 tekens lang zijn.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'U kunt ervoor kiezen om deze gebruiker een uitnodigingsmail te sturen waarmee hij zijn eigen wachtwoord kan instellen, anders kunt u zelf zijn wachtwoord instellen.',
     'users_send_invite_option' => 'Stuur gebruiker uitnodigings e-mail',
     'users_external_auth_id' => 'Externe authenticatie ID',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Token aanmaken',
     'users_api_tokens_expires' => 'Verloopt',
     'users_api_tokens_docs' => 'API Documentatie',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'API-token aanmaken',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Weet u zeker dat u deze API-token wilt verwijderen?',
     'user_api_token_delete_success' => 'API-token succesvol verwijderd',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

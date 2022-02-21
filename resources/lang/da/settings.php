@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'Vedligeholdelse',
     'maint_image_cleanup' => 'Ryd op i billeder',
-    'maint_image_cleanup_desc' => "Scanner side & revisionsindhold for at kontrollere, hvilke billeder og tegninger, der i øjeblikket er i brug, og hvilke billeder, der er overflødige. Sørg for, at du opretter en komplet database og billedbackup, før du kører dette.",
+    'maint_image_cleanup_desc' => 'Scanner side & revisionsindhold for at kontrollere, hvilke billeder og tegninger, der i øjeblikket er i brug, og hvilke billeder, der er overflødige. Sørg for, at du opretter en komplet database og billedbackup, før du kører dette.',
     'maint_delete_images_only_in_revisions' => 'Slet også billeder, der kun findes i gamle siderevisioner',
     'maint_image_cleanup_run' => 'Kør Oprydning',
     'maint_image_cleanup_warning' => 'der blev fundet :count potentielt ubrugte billeder. Er du sikker på, at du vil slette disse billeder?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'Papirkurv',
     'recycle_bin_desc' => 'Her kan du gendanne elementer, der er blevet slettet eller vælge at permanent fjerne dem fra systemet. Denne liste er ufiltreret, i modsætning til lignende aktivitetslister i systemet, hvor tilladelsesfiltre anvendes.',
     'recycle_bin_deleted_item' => 'Slettet element',
+    'recycle_bin_deleted_parent' => 'Overordnet',
     'recycle_bin_deleted_by' => 'Slettet af',
     'recycle_bin_deleted_at' => 'Sletningstidspunkt',
     'recycle_bin_permanently_delete' => 'Slet permanent',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'Elementer der skal gendannes',
     'recycle_bin_restore_confirm' => 'Denne handling vil gendanne det slettede element, herunder alle underelementer, til deres oprindelige placering. Hvis den oprindelige placering siden er blevet slettet, og nu er i papirkurven, vil det overordnede element også skulle gendannes.',
     'recycle_bin_restore_deleted_parent' => 'Det overordnede element til dette element er også blevet slettet. Disse vil forblive slettet indtil det overordnede også er gendannet.',
+    'recycle_bin_restore_parent' => 'Gendan Overordnet',
     'recycle_bin_destroy_notification' => 'Slettede :count elementer fra papirkurven.',
     'recycle_bin_restore_notification' => 'Gendannede :count elementer fra papirkurven.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'Bruger',
     'audit_table_event' => 'Hændelse',
     'audit_table_related' => 'Relateret element eller detalje',
+    'audit_table_ip' => 'IP-adresse',
     'audit_table_date' => 'Aktivitetsdato',
     'audit_date_from' => 'Datointerval fra',
     'audit_date_to' => 'Datointerval til',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'Rolledetaljer',
     'role_name' => 'Rollenavn',
     'role_desc' => 'Kort beskrivelse af rolle',
+    'role_mfa_enforced' => 'Kræver multifaktor godkendelse',
     'role_external_auth_id' => 'Eksterne godkendelses-IDer',
     'role_system' => 'Systemtilladelser',
     'role_manage_users' => 'Administrere brugere',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'Administrer side-skabeloner',
     'role_access_api' => 'Tilgå system-API',
     'role_manage_settings' => 'Administrer app-indstillinger',
+    'role_export_content' => 'Eksporter indhold',
     'role_asset' => 'Tilladelser for medier og "assets"',
     'roles_system_warning' => 'Vær opmærksom på, at adgang til alle af de ovennævnte tre tilladelser, kan give en bruger mulighed for at ændre deres egne brugerrettigheder eller brugerrettigheder for andre i systemet. Tildel kun roller med disse tilladelser til betroede brugere.',
     'role_asset_desc' => 'Disse tilladelser kontrollerer standardadgang til medier og "assets" i systemet. Tilladelser til bøger, kapitler og sider tilsidesætter disse tilladelser.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'Brugerroller',
     'users_role_desc' => 'Vælg hvilke roller denne bruger skal tildeles. Hvis en bruger er tildelt flere roller, sammenføres tilladelserne fra disse roller, og de får alle evnerne fra de tildelte roller.',
     'users_password' => 'Brugeradgangskode',
-    'users_password_desc' => 'Sæt et kodeord, der bruges til at logge på applikationen. Dette skal være mindst 6 tegn langt.',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'Du kan vælge at sende denne bruger en invitation på E-Mail, som giver dem mulighed for at indstille deres egen adgangskode, ellers kan du indstille deres adgangskode selv.',
     'users_send_invite_option' => 'Send bruger en invitationsmail',
     'users_external_auth_id' => 'Ekstern godkendelses ID',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'Opret Token',
     'users_api_tokens_expires' => 'Udløber',
     'users_api_tokens_docs' => 'API-dokumentation',
+    'users_mfa' => 'Multi-faktor godkendelse',
+    'users_mfa_desc' => 'Opsæt multi-faktor godkendelse som et ekstra lag af sikkerhed for din brugerkonto.',
+    'users_mfa_x_methods' => ':count metode konfigureret|:count metoder konfigureret',
+    'users_mfa_configure' => 'Konfigurer metoder',
 
     // API Tokens
     'user_api_token_create' => 'Opret API-token',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'Er du sikker på, at du vil slette denne API-token?',
     'user_api_token_delete_success' => 'API-token slettet',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'Hebraisk',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

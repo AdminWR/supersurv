@@ -20,7 +20,7 @@ return [
     'role' => '권한',
     'cover_image' => '대표 이미지',
     'cover_image_description' => '이미지 규격은 440x250px 내외입니다.',
-    
+
     // Actions
     'actions' => '활동',
     'view' => '보기',
@@ -39,11 +39,14 @@ return [
     'reset' => '리셋',
     'remove' => '제거',
     'add' => '추가',
+    'configure' => 'Configure',
     'fullscreen' => '전체화면',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => '정렬 기준',
@@ -60,6 +63,7 @@ return [
     'no_activity' => '활동 없음',
     'no_items' => '항목 없음',
     'back_to_top' => '맨 위로',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => '내용 보기',
     'toggle_thumbnails' => '섬네일 보기',
     'details' => '정보',
@@ -67,6 +71,10 @@ return [
     'list_view' => '목록 보기',
     'default' => '기본 설정',
     'breadcrumb' => '탐색 경로',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Expand Header Menu',

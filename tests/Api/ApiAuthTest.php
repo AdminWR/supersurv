@@ -1,6 +1,9 @@
-<?php namespace Tests\Api;
+<?php
+
+namespace Tests\Api;
 
 use BookStack\Auth\Permissions\RolePermission;
+use BookStack\Auth\Role;
 use BookStack\Auth\User;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -29,28 +32,28 @@ class ApiAuthTest extends TestCase
     {
         $resp = $this->get($this->endpoint);
         $resp->assertStatus(401);
-        $resp->assertJson($this->errorResponse("No authorization token found on the request", 401));
+        $resp->assertJson($this->errorResponse('No authorization token found on the request', 401));
     }
 
     public function test_bad_token_format_throws_error()
     {
-        $resp = $this->get($this->endpoint, ['Authorization' => "Token abc123"]);
+        $resp = $this->get($this->endpoint, ['Authorization' => 'Token abc123']);
         $resp->assertStatus(401);
-        $resp->assertJson($this->errorResponse("An authorization token was found on the request but the format appeared incorrect", 401));
+        $resp->assertJson($this->errorResponse('An authorization token was found on the request but the format appeared incorrect', 401));
     }
 
     public function test_token_with_non_existing_id_throws_error()
     {
-        $resp = $this->get($this->endpoint, ['Authorization' => "Token abc:123"]);
+        $resp = $this->get($this->endpoint, ['Authorization' => 'Token abc:123']);
         $resp->assertStatus(401);
-        $resp->assertJson($this->errorResponse("No matching API token was found for the provided authorization token", 401));
+        $resp->assertJson($this->errorResponse('No matching API token was found for the provided authorization token', 401));
     }
 
     public function test_token_with_bad_secret_value_throws_error()
     {
         $resp = $this->get($this->endpoint, ['Authorization' => "Token {$this->apiTokenId}:123"]);
         $resp->assertStatus(401);
-        $resp->assertJson($this->errorResponse("The secret provided for the given used API token is incorrect", 401));
+        $resp->assertJson($this->errorResponse('The secret provided for the given used API token is incorrect', 401));
     }
 
     public function test_api_access_permission_required_to_access_api()
@@ -65,7 +68,7 @@ class ApiAuthTest extends TestCase
 
         $resp = $this->get($this->endpoint, $this->apiAuthHeader());
         $resp->assertStatus(403);
-        $resp->assertJson($this->errorResponse("The owner of the used API token does not have permission to make API calls", 403));
+        $resp->assertJson($this->errorResponse('The owner of the used API token does not have permission to make API calls', 403));
     }
 
     public function test_api_access_permission_required_to_access_api_with_session_auth()
@@ -86,7 +89,27 @@ class ApiAuthTest extends TestCase
         $this->actingAs($editor, 'standard');
         $resp = $this->get($this->endpoint);
         $resp->assertStatus(403);
-        $resp->assertJson($this->errorResponse("The owner of the used API token does not have permission to make API calls", 403));
+        $resp->assertJson($this->errorResponse('The owner of the used API token does not have permission to make API calls', 403));
+    }
+
+    public function test_access_prevented_for_guest_users_with_api_permission_while_public_access_disabled()
+    {
+        $this->disableCookieEncryption();
+        $publicRole = Role::getSystemRole('public');
+        $accessApiPermission = RolePermission::getByName('access-api');
+        $publicRole->attachPermission($accessApiPermission);
+
+        $this->withCookie('bookstack_session', 'abc123');
+
+        // Test API access when not public
+        setting()->put('app-public', false);
+        $resp = $this->get($this->endpoint);
+        $resp->assertStatus(403);
+
+        // Test API access when public
+        setting()->put('app-public', true);
+        $resp = $this->get($this->endpoint);
+        $resp->assertStatus(200);
     }
 
     public function test_token_expiry_checked()
@@ -102,7 +125,7 @@ class ApiAuthTest extends TestCase
         $token->save();
 
         $resp = $this->get($this->endpoint, $this->apiAuthHeader());
-        $resp->assertJson($this->errorResponse("The authorization token used has expired", 403));
+        $resp->assertJson($this->errorResponse('The authorization token used has expired', 403));
     }
 
     public function test_email_confirmation_checked_using_api_auth()
@@ -116,7 +139,7 @@ class ApiAuthTest extends TestCase
 
         $resp = $this->get($this->endpoint, $this->apiAuthHeader());
         $resp->assertStatus(401);
-        $resp->assertJson($this->errorResponse("The email address for the account in use needs to be confirmed", 401));
+        $resp->assertJson($this->errorResponse('The email address for the account in use needs to be confirmed', 401));
     }
 
     public function test_rate_limit_headers_active_on_requests()
@@ -141,7 +164,7 @@ class ApiAuthTest extends TestCase
         $resp->assertJson([
             'error' => [
                 'code' => 429,
-            ]
+            ],
         ]);
     }
 }

@@ -20,7 +20,7 @@ return [
     'role' => 'Loma',
     'cover_image' => 'Vāka attēls',
     'cover_image_description' => 'Šim attēlam būtu jābūt aptuveni 440x250px.',
-    
+
     // Actions
     'actions' => 'Darbības',
     'view' => 'Skatīt',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Atiestatīt',
     'remove' => 'Noņemt',
     'add' => 'Pievienot',
+    'configure' => 'Mainīt konfigurāciju',
     'fullscreen' => 'Pilnekrāns',
     'favourite' => 'Pievienot favorītiem',
     'unfavourite' => 'Noņemt no favorītiem',
     'next' => 'Nākamais',
     'previous' => 'Iepriekšējais',
+    'filter_active' => 'Aktīvais filtrs:',
+    'filter_clear' => 'Notīrīt filtru',
 
     // Sort Options
     'sort_options' => 'Kārtošanas Opcijas',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Nav skatāmu darbību',
     'no_items' => 'Vienumi nav pieejami',
     'back_to_top' => 'Uz augšu',
+    'skip_to_main_content' => 'Pāriet uz saturu',
     'toggle_details' => 'Rādīt aprakstu',
     'toggle_thumbnails' => 'Iezīmēt sīkatēlus',
     'details' => 'Sīkāka informācija',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Saraksta Skats',
     'default' => 'Noklusējums',
     'breadcrumb' => 'Navigācija',
+    'status' => 'Statuss',
+    'status_active' => 'Aktīvs',
+    'status_inactive' => 'Neaktīvs',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Izvērst galvenes izvēlni',

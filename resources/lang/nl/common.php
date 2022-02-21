@@ -20,7 +20,7 @@ return [
     'role' => 'Rol',
     'cover_image' => 'Omslagfoto',
     'cover_image_description' => 'Deze afbeelding moet ongeveer 440x250px zijn.',
-    
+
     // Actions
     'actions' => 'Acties',
     'view' => 'Bekijk',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Resetten',
     'remove' => 'Verwijderen',
     'add' => 'Toevoegen',
+    'configure' => 'Configureer',
     'fullscreen' => 'Volledig scherm',
     'favourite' => 'Favoriet',
     'unfavourite' => 'Verwijderen uit favoriet',
     'next' => 'Volgende',
     'previous' => 'Vorige',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Sorteeropties',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Geen activiteit om weer te geven',
     'no_items' => 'Geen items beschikbaar',
     'back_to_top' => 'Terug naar boven',
+    'skip_to_main_content' => 'Direct naar de hoofdinhoud',
     'toggle_details' => 'Details weergeven',
     'toggle_thumbnails' => 'Thumbnails weergeven',
     'details' => 'Details',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Lijstweergave',
     'default' => 'Standaard',
     'breadcrumb' => 'Kruimelpad',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Header menu uitvouwen',

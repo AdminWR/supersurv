@@ -4,9 +4,8 @@ namespace BookStack\Http\Controllers;
 
 use BookStack\Facades\Activity;
 use BookStack\Interfaces\Loggable;
-use BookStack\HasCreatorAndUpdater;
 use BookStack\Model;
-use finfo;
+use BookStack\Util\WebSafeMimeSniffer;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -16,7 +15,8 @@ use Illuminate\Routing\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     /**
      * Check if the current user is signed in.
@@ -48,6 +48,8 @@ abstract class Controller extends BaseController
     /**
      * On a permission error redirect to home and display.
      * the error as a notification.
+     *
+     * @return never
      */
     protected function showPermissionError()
     {
@@ -106,7 +108,7 @@ abstract class Controller extends BaseController
     /**
      * Send back a json error message.
      */
-    protected function jsonError(string $messageText = "", int $statusCode = 500): JsonResponse
+    protected function jsonError(string $messageText = '', int $statusCode = 500): JsonResponse
     {
         return response()->json(['message' => $messageText, 'status' => 'error'], $statusCode);
     }
@@ -117,8 +119,9 @@ abstract class Controller extends BaseController
     protected function downloadResponse(string $content, string $fileName): Response
     {
         return response()->make($content, 200, [
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            'Content-Type'           => 'application/octet-stream',
+            'Content-Disposition'    => 'attachment; filename="' . $fileName . '"',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
     }
 
@@ -128,11 +131,12 @@ abstract class Controller extends BaseController
      */
     protected function inlineDownloadResponse(string $content, string $fileName): Response
     {
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = $finfo->buffer($content) ?: 'application/octet-stream';
+        $mime = (new WebSafeMimeSniffer())->sniff($content);
+
         return response()->make($content, 200, [
-            'Content-Type'        => $mime,
-            'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+            'Content-Type'           => $mime,
+            'Content-Disposition'    => 'inline; filename="' . $fileName . '"',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
     }
 
@@ -162,7 +166,8 @@ abstract class Controller extends BaseController
 
     /**
      * Log an activity in the system.
-     * @param string|Loggable
+     *
+     * @param string|Loggable $detail
      */
     protected function logActivity(string $type, $detail = ''): void
     {
@@ -172,8 +177,8 @@ abstract class Controller extends BaseController
     /**
      * Get the validation rules for image files.
      */
-    protected function getImageValidationRules(): string
+    protected function getImageValidationRules(): array
     {
-        return 'image_extension|mimes:jpeg,png,gif,webp';
+        return ['image_extension', 'mimes:jpeg,png,gif,webp', 'max:' . (config('app.upload_limit') * 1000)];
     }
 }

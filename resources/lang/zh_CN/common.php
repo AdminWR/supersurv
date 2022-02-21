@@ -19,8 +19,8 @@ return [
     'description' => '概要',
     'role' => '角色',
     'cover_image' => '封面图片',
-    'cover_image_description' => '该图像大小需要为440x250px。',
-    
+    'cover_image_description' => '此图像大小应约为 440x250 像素。',
+
     // Actions
     'actions' => '操作',
     'view' => '浏览',
@@ -39,11 +39,14 @@ return [
     'reset' => '重置',
     'remove' => '删除',
     'add' => '添加',
+    'configure' => '配置',
     'fullscreen' => '全屏',
     'favourite' => '收藏',
-    'unfavourite' => '不喜欢',
+    'unfavourite' => '取消收藏',
     'next' => '下一页',
     'previous' => '上一页',
+    'filter_active' => '标签过滤器：',
+    'filter_clear' => '清除过滤器',
 
     // Sort Options
     'sort_options' => '排序选项',
@@ -60,6 +63,7 @@ return [
     'no_activity' => '没有活动要显示',
     'no_items' => '没有可用的项目',
     'back_to_top' => '回到顶部',
+    'skip_to_main_content' => '跳转到主要内容',
     'toggle_details' => '显示/隐藏详细信息',
     'toggle_thumbnails' => '显示/隐藏缩略图',
     'details' => '详细信息',
@@ -67,12 +71,16 @@ return [
     'list_view' => '列表视图',
     'default' => '默认',
     'breadcrumb' => '面包屑导航',
+    'status' => '状态',
+    'status_active' => '已激活',
+    'status_inactive' => '未激活',
+    'never' => '从未',
 
     // Header
     'header_menu_expand' => '展开标头菜单',
     'profile_menu' => '个人资料',
-    'view_profile' => '查看资料',
-    'edit_profile' => '编辑资料',
+    'view_profile' => '查看个人资料',
+    'edit_profile' => '编辑个人资料',
     'dark_mode' => '夜间模式',
     'light_mode' => '日间模式',
 

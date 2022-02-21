@@ -72,7 +72,7 @@ return [
     // Maintenance settings
     'maint' => 'תחזוקה',
     'maint_image_cleanup' => 'ניקוי תמונות',
-    'maint_image_cleanup_desc' => "סורק את הדפים והגרסאות על מנת למצוא אילו תמונות לא בשימוש. יש לוודא גיבוי מלא של מסד הנתונים והתמונות לפני הרצה",
+    'maint_image_cleanup_desc' => 'סורק את הדפים והגרסאות על מנת למצוא אילו תמונות לא בשימוש. יש לוודא גיבוי מלא של מסד הנתונים והתמונות לפני הרצה',
     'maint_delete_images_only_in_revisions' => 'מחק בנוסף תמונות שקיימות בגרסאות ישנות של הדף בלבד',
     'maint_image_cleanup_run' => 'הפעל ניקוי תמונות',
     'maint_image_cleanup_warning' => 'נמצאו כ :count תמונות אשר לא בשימוש האם ברצונך להמשיך?',
@@ -92,6 +92,7 @@ return [
     'recycle_bin' => 'סל המיחזור',
     'recycle_bin_desc' => 'כאן תוכלו לאחזר פריטים שנמחקו או לבחור למחוק אותם מהמערכת לצמיתות. רשימה זו לא מסוננת, בשונה מרשימות פעילות דומות במערכת, בהן מוחלים מסנני הרשאות.',
     'recycle_bin_deleted_item' => 'פריט שנמחק',
+    'recycle_bin_deleted_parent' => 'Parent',
     'recycle_bin_deleted_by' => 'נמחק על ידי',
     'recycle_bin_deleted_at' => 'זמן המחיקה',
     'recycle_bin_permanently_delete' => 'מחק לצמיתות',
@@ -104,6 +105,7 @@ return [
     'recycle_bin_restore_list' => 'פריטים שיאוחזרו',
     'recycle_bin_restore_confirm' => 'פעולה זו תאחזר את הפריט שנמחק, לרבות רכיבי-הבן שלו, למיקומו המקורי. אם המיקום המקורי נמחק מאז, וכעת נמצא בסל המיחזור, יש לאחזר גם את פריט-האב.',
     'recycle_bin_restore_deleted_parent' => 'פריט-האב של פריט זה נמחק. פריטים אלה יישארו מחוקים עד שפריט-אב זה יאוחזר.',
+    'recycle_bin_restore_parent' => 'Restore Parent',
     'recycle_bin_destroy_notification' => 'נמחקו בסה"כ :count פריטים מסל המיחזור.',
     'recycle_bin_restore_notification' => 'אוחזרו בסה"כ :count פריטים מסל המיחזור.',
 
@@ -117,6 +119,7 @@ return [
     'audit_table_user' => 'משתמש',
     'audit_table_event' => 'אירוע',
     'audit_table_related' => 'פריט או פרט קשור',
+    'audit_table_ip' => 'IP Address',
     'audit_table_date' => 'זמן הפעילות',
     'audit_date_from' => 'טווח תאריכים החל מ...',
     'audit_date_to' => 'טווח תאריכים עד ל...',
@@ -136,6 +139,7 @@ return [
     'role_details' => 'פרטי תפקיד',
     'role_name' => 'שם התפקיד',
     'role_desc' => 'תיאור קצר של התפקיד',
+    'role_mfa_enforced' => 'Requires Multi-Factor Authentication',
     'role_external_auth_id' => 'ID-י אותנטיקציה חיצוניים',
     'role_system' => 'הרשאות מערכת',
     'role_manage_users' => 'ניהול משתמשים',
@@ -145,6 +149,7 @@ return [
     'role_manage_page_templates' => 'נהל תבניות דפים',
     'role_access_api' => 'גש ל-API המערכת',
     'role_manage_settings' => 'ניהול הגדרות יישום',
+    'role_export_content' => 'Export content',
     'role_asset' => 'הרשאות משאבים',
     'roles_system_warning' => 'שימו לב לכך שגישה לכל אחת משלושת ההרשאות הנ"ל יכולה לאפשר למשתמש לשנות את הפריווילגיות שלהם או של אחרים במערכת. הגדירו תפקידים להרשאות אלה למשתמשים בהם אתם בוטחים בלבד.',
     'role_asset_desc' => 'הרשאות אלו שולטות בגישת ברירת המחדל למשאבים בתוך המערכת. הרשאות של ספרים, פרקים ודפים יגברו על הרשאות אלו.',
@@ -169,7 +174,7 @@ return [
     'users_role' => 'תפקידי משתמשים',
     'users_role_desc' => 'בחר אילו תפקידים ישויכו למשתמש זה. אם המשתמש משוייך למספר תפקידים, ההרשאות יהיו כלל ההרשאות של כל התפקידים',
     'users_password' => 'סיסמא',
-    'users_password_desc' => 'הגדר סיסמא עבור גישה למערכת. על הסיסמא להיות באורך של 5 תווים לפחות',
+    'users_password_desc' => 'Set a password used to log-in to the application. This must be at least 8 characters long.',
     'users_send_invite_text' => 'תוכלו לבחור לשלוח למשתמש זה דוא"ל הזמנה, המאפשר להם להגדיר סיסמה משלהם. אחרת, תוכלו להגדיר את סיסמתם בעצמכם.',
     'users_send_invite_option' => 'שלח דוא"ל הזמנה למשתמש',
     'users_external_auth_id' => 'זיהוי חיצוני - ID',
@@ -202,6 +207,10 @@ return [
     'users_api_tokens_create' => 'צור אסימון',
     'users_api_tokens_expires' => 'פג',
     'users_api_tokens_docs' => 'תיעוד API',
+    'users_mfa' => 'Multi-Factor Authentication',
+    'users_mfa_desc' => 'Setup multi-factor authentication as an extra layer of security for your user account.',
+    'users_mfa_x_methods' => ':count method configured|:count methods configured',
+    'users_mfa_configure' => 'Configure Methods',
 
     // API Tokens
     'user_api_token_create' => 'צור אסימון API',
@@ -224,6 +233,34 @@ return [
     'user_api_token_delete_confirm' => 'האם אתם בטוחים שאתם מעוניינים למחוק אסימון API זה?',
     'user_api_token_delete_success' => 'אסימון API נמחק בהצלחה',
 
+    // Webhooks
+    'webhooks' => 'Webhooks',
+    'webhooks_create' => 'Create New Webhook',
+    'webhooks_none_created' => 'No webhooks have yet been created.',
+    'webhooks_edit' => 'Edit Webhook',
+    'webhooks_save' => 'Save Webhook',
+    'webhooks_details' => 'Webhook Details',
+    'webhooks_details_desc' => 'Provide a user friendly name and a POST endpoint as a location for the webhook data to be sent to.',
+    'webhooks_events' => 'Webhook Events',
+    'webhooks_events_desc' => 'Select all the events that should trigger this webhook to be called.',
+    'webhooks_events_warning' => 'Keep in mind that these events will be triggered for all selected events, even if custom permissions are applied. Ensure that use of this webhook won\'t expose confidential content.',
+    'webhooks_events_all' => 'All system events',
+    'webhooks_name' => 'Webhook Name',
+    'webhooks_timeout' => 'Webhook Request Timeout (Seconds)',
+    'webhooks_endpoint' => 'Webhook Endpoint',
+    'webhooks_active' => 'Webhook Active',
+    'webhook_events_table_header' => 'Events',
+    'webhooks_delete' => 'Delete Webhook',
+    'webhooks_delete_warning' => 'This will fully delete this webhook, with the name \':webhookName\', from the system.',
+    'webhooks_delete_confirm' => 'Are you sure you want to delete this webhook?',
+    'webhooks_format_example' => 'Webhook Format Example',
+    'webhooks_format_example_desc' => 'Webhook data is sent as a POST request to the configured endpoint as JSON following the format below. The "related_item" and "url" properties are optional and will depend on the type of event triggered.',
+    'webhooks_status' => 'Webhook Status',
+    'webhooks_last_called' => 'Last Called:',
+    'webhooks_last_errored' => 'Last Errored:',
+    'webhooks_last_error_message' => 'Last Error Message:',
+
+
     //! If editing translations files directly please ignore this in all
     //! languages apart from en. Content will be auto-copied from en.
     //!////////////////////////////////
@@ -239,6 +276,7 @@ return [
         'de_informal' => 'Deutsch (Du)',
         'es' => 'Español',
         'es_AR' => 'Español Argentina',
+        'et' => 'Eesti keel',
         'fr' => 'Français',
         'he' => 'עברית',
         'hr' => 'Hrvatski',
@@ -247,6 +285,7 @@ return [
         'it' => 'Italian',
         'ja' => '日本語',
         'ko' => '한국어',
+        'lt' => 'Lietuvių Kalba',
         'lv' => 'Latviešu Valoda',
         'nl' => 'Nederlands',
         'nb' => 'Norsk (Bokmål)',
@@ -262,6 +301,6 @@ return [
         'vi' => 'Tiếng Việt',
         'zh_CN' => '简体中文',
         'zh_TW' => '繁體中文',
-    ]
+    ],
     //!////////////////////////////////
 ];

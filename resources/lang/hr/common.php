@@ -20,7 +20,7 @@ return [
     'role' => 'Uloga',
     'cover_image' => 'Naslovna slika',
     'cover_image_description' => 'Slika treba biti približno 440x250px.',
-    
+
     // Actions
     'actions' => 'Aktivnost',
     'view' => 'Pogled',
@@ -39,11 +39,14 @@ return [
     'reset' => 'Ponovno postavi',
     'remove' => 'Ukloni',
     'add' => 'Dodaj',
+    'configure' => 'Configure',
     'fullscreen' => 'Cijeli zaslon',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'Razvrstaj opcije',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'Nema aktivnosti za pregled',
     'no_items' => 'Nedostupno',
     'back_to_top' => 'Natrag na vrh',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'Prebaci detalje',
     'toggle_thumbnails' => 'Uključi minijature',
     'details' => 'Detalji',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'Prikaz popisa',
     'default' => 'Zadano',
     'breadcrumb' => 'Breadcrumb',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'Proširi izbornik',

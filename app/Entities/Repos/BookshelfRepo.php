@@ -1,4 +1,6 @@
-<?php namespace BookStack\Entities\Repos;
+<?php
+
+namespace BookStack\Entities\Repos;
 
 use BookStack\Actions\ActivityType;
 use BookStack\Entities\Models\Book;
@@ -88,7 +90,8 @@ class BookshelfRepo
         $shelf = new Bookshelf();
         $this->baseRepo->create($shelf, $input);
         $this->updateBooks($shelf, $bookIds);
-        Activity::addForEntity($shelf, ActivityType::BOOKSHELF_CREATE);
+        Activity::add(ActivityType::BOOKSHELF_CREATE, $shelf);
+
         return $shelf;
     }
 
@@ -103,7 +106,8 @@ class BookshelfRepo
             $this->updateBooks($shelf, $bookIds);
         }
 
-        Activity::addForEntity($shelf, ActivityType::BOOKSHELF_UPDATE);
+        Activity::add(ActivityType::BOOKSHELF_UPDATE, $shelf);
+
         return $shelf;
     }
 
@@ -120,7 +124,8 @@ class BookshelfRepo
 
         $syncData = Book::visible()
             ->whereIn('id', $bookIds)
-            ->get(['id'])->pluck('id')->mapWithKeys(function ($bookId) use ($numericIDs) {
+            ->pluck('id')
+            ->mapWithKeys(function ($bookId) use ($numericIDs) {
                 return [$bookId => ['order' => $numericIDs->search($bookId)]];
             });
 
@@ -129,6 +134,7 @@ class BookshelfRepo
 
     /**
      * Update the given shelf cover image, or clear it.
+     *
      * @throws ImageUploadException
      * @throws Exception
      */
@@ -164,13 +170,14 @@ class BookshelfRepo
 
     /**
      * Remove a bookshelf from the system.
+     *
      * @throws Exception
      */
     public function destroy(Bookshelf $shelf)
     {
         $trashCan = new TrashCan();
         $trashCan->softDestroyShelf($shelf);
-        Activity::addForEntity($shelf, ActivityType::BOOKSHELF_DELETE);
+        Activity::add(ActivityType::BOOKSHELF_DELETE, $shelf);
         $trashCan->autoClearOld();
     }
 }

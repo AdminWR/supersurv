@@ -1,16 +1,23 @@
-<?php namespace BookStack\Entities\Tools;
+<?php
+
+namespace BookStack\Entities\Tools;
 
 use BookStack\Entities\Models\Page;
+use BookStack\Entities\Tools\Markdown\CustomListItemRenderer;
 use BookStack\Entities\Tools\Markdown\CustomStrikeThroughExtension;
 use BookStack\Exceptions\ImageUploadException;
 use BookStack\Facades\Theme;
 use BookStack\Theming\ThemeEvents;
-use BookStack\Util\HtmlContentFilter;
 use BookStack\Uploads\ImageRepo;
+use BookStack\Uploads\ImageService;
+use BookStack\Util\HtmlContentFilter;
 use DOMDocument;
+use DOMElement;
+use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use Illuminate\Support\Str;
+use League\CommonMark\Block\Element\ListItem;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use League\CommonMark\Extension\Table\TableExtension;
@@ -18,7 +25,6 @@ use League\CommonMark\Extension\TaskList\TaskListExtension;
 
 class PageContent
 {
-
     protected $page;
 
     /**
@@ -34,7 +40,7 @@ class PageContent
      */
     public function setNewHTML(string $html)
     {
-        $html = $this->extractBase64Images($this->page, $html);
+        $html = $this->extractBase64ImagesFromHtml($html);
         $this->page->html = $this->formatHtml($html);
         $this->page->text = $this->toPlainText();
         $this->page->markdown = '';
@@ -45,6 +51,7 @@ class PageContent
      */
     public function setNewMarkdown(string $markdown)
     {
+        $markdown = $this->extractBase64ImagesFromMarkdown($markdown);
         $this->page->markdown = $markdown;
         $html = $this->markdownToHtml($markdown);
         $this->page->html = $this->formatHtml($html);
@@ -62,13 +69,16 @@ class PageContent
         $environment->addExtension(new CustomStrikeThroughExtension());
         $environment = Theme::dispatch(ThemeEvents::COMMONMARK_ENVIRONMENT_CONFIGURE, $environment) ?? $environment;
         $converter = new CommonMarkConverter([], $environment);
+
+        $environment->addBlockRenderer(ListItem::class, new CustomListItemRenderer(), 10);
+
         return $converter->convertToHtml($markdown);
     }
 
     /**
-     * Convert all base64 image data to saved images
+     * Convert all base64 image data to saved images.
      */
-    public function extractBase64Images(Page $page, string $htmlText): string
+    protected function extractBase64ImagesFromHtml(string $htmlText): string
     {
         if (empty($htmlText) || strpos($htmlText, 'data:image') === false) {
             return $htmlText;
@@ -79,30 +89,13 @@ class PageContent
         $body = $container->childNodes->item(0);
         $childNodes = $body->childNodes;
         $xPath = new DOMXPath($doc);
-        $imageRepo = app()->make(ImageRepo::class);
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
         // Get all img elements with image data blobs
         $imageNodes = $xPath->query('//img[contains(@src, \'data:image\')]');
         foreach ($imageNodes as $imageNode) {
             $imageSrc = $imageNode->getAttribute('src');
-            [$dataDefinition, $base64ImageData] = explode(',', $imageSrc, 2);
-            $extension = strtolower(preg_split('/[\/;]/', $dataDefinition)[1] ?? 'png');
-
-            // Validate extension
-            if (!in_array($extension, $allowedExtensions)) {
-                $imageNode->setAttribute('src', '');
-                continue;
-            }
-
-            // Save image from data with a random name
-            $imageName = 'embedded-image-' . Str::random(8) . '.' . $extension;
-            try {
-                $image = $imageRepo->saveNewFromData($imageName, base64_decode($base64ImageData), 'gallery', $page->id);
-                $imageNode->setAttribute('src', $image->url);
-            } catch (ImageUploadException $exception) {
-                $imageNode->setAttribute('src', '');
-            }
+            $newUrl = $this->base64ImageUriToUploadedImageUrl($imageSrc);
+            $imageNode->setAttribute('src', $newUrl);
         }
 
         // Generate inner html as a string
@@ -112,6 +105,70 @@ class PageContent
         }
 
         return $html;
+    }
+
+    /**
+     * Convert all inline base64 content to uploaded image files.
+     */
+    protected function extractBase64ImagesFromMarkdown(string $markdown)
+    {
+        $matches = [];
+        preg_match_all('/!\[.*?]\(.*?(data:image\/.*?)[)"\s]/', $markdown, $matches);
+
+        foreach ($matches[1] as $base64Match) {
+            $newUrl = $this->base64ImageUriToUploadedImageUrl($base64Match);
+            $markdown = str_replace($base64Match, $newUrl, $markdown);
+        }
+
+        return $markdown;
+    }
+
+    /**
+     * Parse the given base64 image URI and return the URL to the created image instance.
+     * Returns an empty string if the parsed URI is invalid or causes an error upon upload.
+     */
+    protected function base64ImageUriToUploadedImageUrl(string $uri): string
+    {
+        $imageRepo = app()->make(ImageRepo::class);
+        $imageInfo = $this->parseBase64ImageUri($uri);
+
+        // Validate extension and content
+        if (empty($imageInfo['data']) || !ImageService::isExtensionSupported($imageInfo['extension'])) {
+            return '';
+        }
+
+        // Validate that the content is not over our upload limit
+        $uploadLimitBytes = (config('app.upload_limit') * 1000000);
+        if (strlen($imageInfo['data']) > $uploadLimitBytes) {
+            return '';
+        }
+
+        // Save image from data with a random name
+        $imageName = 'embedded-image-' . Str::random(8) . '.' . $imageInfo['extension'];
+
+        try {
+            $image = $imageRepo->saveNewFromData($imageName, $imageInfo['data'], 'gallery', $this->page->id);
+        } catch (ImageUploadException $exception) {
+            return '';
+        }
+
+        return $image->url;
+    }
+
+    /**
+     * Parse a base64 image URI into the data and extension.
+     *
+     * @return array{extension: string, data: string}
+     */
+    protected function parseBase64ImageUri(string $uri): array
+    {
+        [$dataDefinition, $base64ImageData] = explode(',', $uri, 2);
+        $extension = strtolower(preg_split('/[\/;]/', $dataDefinition)[1] ?? '');
+
+        return [
+            'extension' => $extension,
+            'data'      => base64_decode($base64ImageData) ?: '',
+        ];
     }
 
     /**
@@ -133,6 +190,15 @@ class PageContent
         $idMap = [];
         foreach ($childNodes as $index => $childNode) {
             [$oldId, $newId] = $this->setUniqueId($childNode, $idMap);
+            if ($newId && $newId !== $oldId) {
+                $this->updateLinks($xPath, '#' . $oldId, '#' . $newId);
+            }
+        }
+
+        // Set ids on nested header nodes
+        $nestedHeaders = $xPath->query('//body//*//h1|//body//*//h2|//body//*//h3|//body//*//h4|//body//*//h5|//body//*//h6');
+        foreach ($nestedHeaders as $nestedHeader) {
+            [$oldId, $newId] = $this->setUniqueId($nestedHeader, $idMap);
             if ($newId && $newId !== $oldId) {
                 $this->updateLinks($xPath, '#' . $oldId, '#' . $newId);
             }
@@ -171,11 +237,11 @@ class PageContent
     /**
      * Set a unique id on the given DOMElement.
      * A map for existing ID's should be passed in to check for current existence.
-     * Returns a pair of strings in the format [old_id, new_id]
+     * Returns a pair of strings in the format [old_id, new_id].
      */
-    protected function setUniqueId(\DOMNode $element, array &$idMap): array
+    protected function setUniqueId(DOMNode $element, array &$idMap): array
     {
-        if (get_class($element) !== 'DOMElement') {
+        if (!$element instanceof DOMElement) {
             return ['', ''];
         }
 
@@ -183,10 +249,11 @@ class PageContent
         $existingId = $element->getAttribute('id');
         if (strpos($existingId, 'bkmrk') === 0 && !isset($idMap[$existingId])) {
             $idMap[$existingId] = true;
+
             return [$existingId, $existingId];
         }
 
-        // Create an unique id for the element
+        // Create a unique id for the element
         // Uses the content as a basis to ensure output is the same every time
         // the same content is passed through.
         $contentId = 'bkmrk-' . mb_substr(strtolower(preg_replace('/\s+/', '-', trim($element->nodeValue))), 0, 20);
@@ -200,6 +267,7 @@ class PageContent
 
         $element->setAttribute('id', $newId);
         $idMap[$newId] = true;
+
         return [$existingId, $newId];
     }
 
@@ -209,15 +277,16 @@ class PageContent
     protected function toPlainText(): string
     {
         $html = $this->render(true);
+
         return html_entity_decode(strip_tags($html));
     }
 
     /**
-     * Render the page for viewing
+     * Render the page for viewing.
      */
     public function render(bool $blankIncludes = false): string
     {
-        $content = $this->page->html;
+        $content = $this->page->html ?? '';
 
         if (!config('app.allow_content_scripts')) {
             $content = HtmlContentFilter::removeScripts($content);
@@ -233,7 +302,7 @@ class PageContent
     }
 
     /**
-     * Parse the headers on the page to get a navigation menu
+     * Parse the headers on the page to get a navigation menu.
      */
     public function getNavigation(string $htmlContent): array
     {
@@ -243,7 +312,7 @@ class PageContent
 
         $doc = $this->loadDocumentFromHtml($htmlContent);
         $xPath = new DOMXPath($doc);
-        $headers = $xPath->query("//h1|//h2|//h3|//h4|//h5|//h6");
+        $headers = $xPath->query('//h1|//h2|//h3|//h4|//h5|//h6');
 
         return $headers ? $this->headerNodesToLevelList($headers) : [];
     }
@@ -254,15 +323,15 @@ class PageContent
      */
     protected function headerNodesToLevelList(DOMNodeList $nodeList): array
     {
-        $tree = collect($nodeList)->map(function ($header) {
+        $tree = collect($nodeList)->map(function (DOMElement $header) {
             $text = trim(str_replace("\xc2\xa0", '', $header->nodeValue));
             $text = mb_substr($text, 0, 100);
 
             return [
                 'nodeName' => strtolower($header->nodeName),
-                'level' => intval(str_replace('h', '', $header->nodeName)),
-                'link' => '#' . $header->getAttribute('id'),
-                'text' => $text,
+                'level'    => intval(str_replace('h', '', $header->nodeName)),
+                'link'     => '#' . $header->getAttribute('id'),
+                'text'     => $text,
             ];
         })->filter(function ($header) {
             return mb_strlen($header['text']) > 0;
@@ -272,6 +341,7 @@ class PageContent
         $levelChange = ($tree->pluck('level')->min() - 1);
         $tree = $tree->map(function ($header) use ($levelChange) {
             $header['level'] -= ($levelChange);
+
             return $header;
         });
 
@@ -305,6 +375,7 @@ class PageContent
             }
 
             // Find page and skip this if page not found
+            /** @var ?Page $matchedPage */
             $matchedPage = Page::visible()->find($pageId);
             if ($matchedPage === null) {
                 $html = str_replace($fullMatch, '', $html);
@@ -325,13 +396,12 @@ class PageContent
         return $html;
     }
 
-
     /**
      * Fetch the content from a specific section of the given page.
      */
     protected function fetchSectionOfPage(Page $page, string $sectionId): string
     {
-        $topLevelTags = ['table', 'ul', 'ol'];
+        $topLevelTags = ['table', 'ul', 'ol', 'pre'];
         $doc = $this->loadDocumentFromHtml($page->html);
 
         // Search included content for the id given and blank out if not exists.
@@ -365,6 +435,7 @@ class PageContent
         $doc = new DOMDocument();
         $html = '<body>' . $html . '</body>';
         $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
         return $doc;
     }
 }

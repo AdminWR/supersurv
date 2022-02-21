@@ -20,7 +20,7 @@ return [
     'role' => 'الدور',
     'cover_image' => 'صورة الغلاف',
     'cover_image_description' => 'الصورة يجب أن تكون مقاربة لحجم 440×250 بكسل.',
-    
+
     // Actions
     'actions' => 'إجراءات',
     'view' => 'عرض',
@@ -39,11 +39,14 @@ return [
     'reset' => 'إعادة تعيين',
     'remove' => 'إزالة',
     'add' => 'إضافة',
+    'configure' => 'Configure',
     'fullscreen' => 'شاشة كاملة',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
     'next' => 'Next',
     'previous' => 'Previous',
+    'filter_active' => 'Active Filter:',
+    'filter_clear' => 'Clear Filter',
 
     // Sort Options
     'sort_options' => 'خيارات الفرز',
@@ -60,6 +63,7 @@ return [
     'no_activity' => 'لا يوجد نشاط لعرضه',
     'no_items' => 'لا توجد عناصر متوفرة',
     'back_to_top' => 'العودة إلى الأعلى',
+    'skip_to_main_content' => 'Skip to main content',
     'toggle_details' => 'عرض / إخفاء التفاصيل',
     'toggle_thumbnails' => 'عرض / إخفاء الصور المصغرة',
     'details' => 'التفاصيل',
@@ -67,6 +71,10 @@ return [
     'list_view' => 'عرض منسدل',
     'default' => 'افتراضي',
     'breadcrumb' => 'شريط التنقل',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'never' => 'Never',
 
     // Header
     'header_menu_expand' => 'عرض القائمة',

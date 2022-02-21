@@ -1,4 +1,6 @@
-<?php namespace BookStack\Entities\Repos;
+<?php
+
+namespace BookStack\Entities\Repos;
 
 use BookStack\Actions\ActivityType;
 use BookStack\Actions\TagRepo;
@@ -15,7 +17,6 @@ use Illuminate\Support\Collection;
 
 class BookRepo
 {
-
     protected $baseRepo;
     protected $tagRepo;
     protected $imageRepo;
@@ -84,13 +85,14 @@ class BookRepo
     }
 
     /**
-     * Create a new book in the system
+     * Create a new book in the system.
      */
     public function create(array $input): Book
     {
         $book = new Book();
         $this->baseRepo->create($book, $input);
-        Activity::addForEntity($book, ActivityType::BOOK_CREATE);
+        Activity::add(ActivityType::BOOK_CREATE, $book);
+
         return $book;
     }
 
@@ -100,12 +102,14 @@ class BookRepo
     public function update(Book $book, array $input): Book
     {
         $this->baseRepo->update($book, $input);
-        Activity::addForEntity($book, ActivityType::BOOK_UPDATE);
+        Activity::add(ActivityType::BOOK_UPDATE, $book);
+
         return $book;
     }
 
     /**
      * Update the given book's cover image, or clear it.
+     *
      * @throws ImageUploadException
      * @throws Exception
      */
@@ -116,13 +120,14 @@ class BookRepo
 
     /**
      * Remove a book from the system.
+     *
      * @throws Exception
      */
     public function destroy(Book $book)
     {
         $trashCan = new TrashCan();
         $trashCan->softDestroyBook($book);
-        Activity::addForEntity($book, ActivityType::BOOK_DELETE);
+        Activity::add(ActivityType::BOOK_DELETE, $book);
 
         $trashCan->autoClearOld();
     }
